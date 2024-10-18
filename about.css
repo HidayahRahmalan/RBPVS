@@ -1,0 +1,131 @@
+/* General Styling */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; 
+    height: 100%; /* Make sure html and body take up full height */
+  margin: 0; 
+  font-family: 'Comic Sans MS', cursive; 
+  background-color: #f2f2f2;
+}
+
+.container-fluid {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Ensure the main container takes up at least the full viewport height */
+}
+
+/* About Course Section */
+.about-course {
+    flex: 1 0 auto; 
+    margin-bottom: 60px; /* Add some margin to create space for the footer */
+}
+
+/* Footer */
+.footer {
+    /* ... existing footer styles ... */
+    position: relative; /* Position the footer relative to its normal flow */
+    bottom: 0; /* Stick it to the bottom */
+    width: 100%;
+}
+
+.navbar {
+    background-color: #4C97FF !important; /* Scratch blue */
+}
+
+.navbar-brand {
+    font-weight: bold;
+    color: white !important;
+}
+
+.nav-link {
+    color: white !important;
+}
+
+.btn-warning {
+    background-color: #FFD500 !important; /* Scratch yellow */
+    border-color: #FFD500 !important;
+    color: #333 !important;
+}
+
+/* Hero Section */
+.hero {
+    background-image: url("img/scroll-background.gif"); /* Add a playful background image */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat; /* Prevent the image from tiling */
+    min-height: 500px;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.hero h1 {
+    font-size: 4rem;
+    margin-bottom: 20px;
+}
+
+/* Features Section */
+.feature-box {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.feature-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.feature-box h3 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+}
+
+.feature-box p {
+    font-size: 1.1rem;
+}
+
+
+.footer {
+    /* ... existing footer styles ... */
+    position: relative; 
+    bottom: 0;
+    width: 100%;
+    margin-top: auto; /* Push the footer to the bottom */
+}
+
+
+
+.about-course {
+    /* ... existing styles ... */
+    background-image: url('scratch-background.png'); /* Use the same background as the index page */
+    background-size: cover;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.content-section {
+    color: black;
+    text-align: center;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.content-section:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+
+.content-section h2 {
+    color: #333; /* Dark text for better contrast */
+}
+
+.content-section ul {
+    list-style: none;
+    padding: 0;
+}

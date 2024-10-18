@@ -1,0 +1,27 @@
+body {
+    font-family: 'Inter', sans-serif;
+    color: #424242;
+    background-color: #EEEEEE;
+    margin: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', serif;
+}
+
+#sidebar {
+    background-color: #00BFA5; /* Teal */
+}
+
+.navbar {
+    background-color: #00BFA5; /* Teal */
+}
+
+.card {
+    border: none;
+    border-radius: 10px; /* Slightly rounded corners */
+}
+
+.card-title {
+    font-weight: 600;
+}

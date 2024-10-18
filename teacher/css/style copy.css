@@ -1,0 +1,251 @@
+/* General Styling */
+body {
+    font-family: 'Comic Sans MS', cursive; 
+    background-color: #f2f2f2;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; 
+    margin: 0;
+}
+
+.navbar {
+    background-color: #4C97FF !important; 
+}
+
+.navbar-brand {
+    font-weight: bold;
+    color: white !important;
+}
+
+.nav-link {
+    color: white !important;
+}
+
+.btn-warning {
+    background-color: #FFD500 !important; 
+    border-color: #FFD500 !important;
+    color: #333 !important;
+}
+
+/* Hero Section */
+.hero {
+    background-image: url("img/scroll-background.gif"); 
+    background-size: contain; 
+    background-position: center;
+    background-repeat: no-repeat; 
+    min-height: 500px;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.hero h1 {
+    font-size: 4rem;
+    margin-bottom: 20px;
+}
+
+/* Features Section */
+.feature-box {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.feature-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.feature-box h3 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+}
+
+.feature-box p {
+    font-size: 1.1rem;
+}
+
+/* About Course Section */
+.about-course {
+    flex: 1 0 auto; 
+}
+
+.content-section {
+    color: black;
+    text-align: center;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.content-section:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.image-container {
+    position: relative;
+    overflow: hidden; 
+    border-radius: 10px;
+}
+
+.image-container img {
+    max-width: 100%;
+    height: auto;
+    transition: transform 0.3s ease; 
+}
+
+.image-container:hover img {
+    transform: scale(1.1);
+}
+
+.overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    padding: 15px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.image-container:hover .overlay {
+    opacity: 1;
+}
+
+.content-section h2 {
+    color: #333; 
+}
+
+.content-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+
+
+/* Sidebar */
+.sidebar {
+    background-color: #4C97FF; /* Scratch Blue */
+    color: #fff;
+}
+
+.sidebar .nav-link {
+    color: #fff;
+}
+
+.sidebar .nav-link.active {
+    background-color: #0373E5; /* Darker blue for active item */
+}
+
+/* Main Content Area */
+main {
+    padding-top: 60px; /* Add padding to avoid navbar overlap */
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        display: none; /* Hide sidebar on smaller screens */
+    }
+
+    main {
+        padding-left: 0; /* Remove left padding on smaller screens */
+    }
+}
+
+/* Content */
+#page-content-wrapper {
+    width: 100%; 
+    transition: all 0.3s;
+    position: relative; /* Add relative positioning */
+    left: 0; /* Initial left position */
+}
+
+#wrapper.toggled #page-content-wrapper {
+    left: 250px; /* Push content to the right when sidebar is open */
+}
+
+@media (min-width: 768px) {
+    #sidebar-wrapper {
+        margin-left: 0; 
+    }
+
+    #page-content-wrapper {
+        margin-left: 250px;
+    }
+
+    #wrapper.toggled #sidebar-wrapper {
+        margin-left: -250px; 
+    }
+
+    #wrapper.toggled #page-content-wrapper {
+        margin-left: 0;
+    }
+}
+
+/* Dashboard Section */
+.dashboard {
+    background-color: #f0f0f0; 
+    min-height: calc(100vh - 60px); /* Adjust min-height to account for navbar */
+    padding-top: 80px; /* Add padding to avoid navbar overlap */
+}
+
+.dashboard .card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard .card-body {
+    padding: 30px;
+}
+
+.dashboard h1, .dashboard h2 {
+    color: #333; 
+}
+
+/* Footer */
+.footer {
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    margin-top: auto; 
+}
+
+/* Additional styling for cards with icons and numbers */
+.card .fa-3x {
+    font-size: 3em; /* Adjust the icon size as needed */
+}
+
+.card .display-4 {
+    font-size: 2.5em; /* Adjust the number size as needed */
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+
+
+
+/* ... other styles ... */
+
+@media (min-width: 768px) {
+    #sidebar-wrapper {
+        margin-left: 0; 
+    }
+
+    #page-content-wrapper {
+        margin-left: 250px;
+    }
+
+    #wrapper.toggled #sidebar-wrapper {
+        margin-left: -250px; 
+    }
+
+    #wrapper.toggled #page-content-wrapper {
+        left: 0; /* Reset left position when toggled on larger screens */
+    }
+}

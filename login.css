@@ -1,0 +1,68 @@
+/* General Styling */
+body {
+    font-family: 'Comic Sans MS', cursive; 
+    background-color: #f2f2f2;
+}
+
+.navbar {
+    background-color: #4C97FF !important; /* Scratch blue */
+}
+
+.navbar-brand {
+    font-weight: bold;
+    color: white !important;
+}
+
+.nav-link {
+    color: white !important;
+}
+
+.btn-warning {
+    background-color: #FFD500 !important; /* Scratch yellow */
+    border-color: #FFD500 !important;
+    color: #333 !important;
+}
+
+/* Hero Section */
+.hero {
+    background-image: url("img/scroll-background.gif"); /* Add a playful background image */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat; /* Prevent the image from tiling */
+    min-height: 500px;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+
+
+
+
+.login {
+    background-color: #f0f0f0; /* Light gray background */
+    min-height: calc(100vh - 60px); /* Adjust min-height to account for the fixed navbar */
+    display: flex;
+    align-items: center; /* Vertically center the login card */
+}
+
+.login .card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.login .card-body {
+    padding: 30px;
+}
+
+.login .form-control {
+    border-radius: 8px;
+}
+
+.login .btn-primary {
+    border-radius: 8px;
+}
+
+.login h1 {
+    color: #333; /* Dark text for better contrast */
+}
