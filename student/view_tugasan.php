@@ -50,7 +50,7 @@ main {
     }
 
     #skNavList .badge {
-        background-color: #28a745; /* Green badge */
+        background-color: #28a745; 
     }
     </style>
 </head>
@@ -106,7 +106,7 @@ main {
                                         if ($result_kumpulan->num_rows > 0) {
                                             $kumpulan_id = $result_kumpulan->fetch_assoc()['kumpulan_id'];
                                         } else {
-                                            $kumpulan_id = null; // Set kumpulan_id to null if no group is found
+                                            $kumpulan_id = null;
                                         }
 
                                         $sql_submission = "SELECT p.*, r.nama_rubrik FROM penyerahan p 
@@ -127,13 +127,7 @@ main {
                                             }
                                             if (!is_null($submission_row["rubrik_id"])) {
                                             echo "<p class='card-text'><strong>Gred:</strong> " . $submission_row["nama_rubrik"] . "</p>";
-                                            if (!empty($row_tugasan["sijil_path"])) {
-                                                echo "<p class='card-text'><strong>Sijil:</strong> <a href='" . $row_tugasan["sijil_path"] . "' target='_blank'>Muat Turun Sijil</a></p>";
-                                            } elseif (is_null($row_tugasan["sijil_path"])) {
-                                                echo "<p class='card-text'><strong>Sijil:</strong> Belum tersedia</p>";
-                                            } else {
-                                                echo "<p class='card-text'><strong>Sijil:</strong> Tiada sijil yang tersedia</p>";
-                                            }
+                                            echo "<button class='btn btn-success btn-sm' onclick=\"window.location.href='certificate.php?tugasan_id=" . $tugasan_id . "';\">Cetak Sijil</button>";
                                             }
                                             } else {
                                             echo "<p class='card-text'><strong>Status:</strong> Belum Hantar</p>";

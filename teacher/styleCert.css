@@ -1,0 +1,133 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Comic Sans MS', cursive;
+}
+  
+#certificate {
+    width: 794px; /* A4 width in pixels (210mm) */
+    height: 1123px; /* A4 height in pixels (297mm) */
+    border: 19px solid #FED766; /* Scratch Yellow border */
+    margin: 50px auto; /* Centered margin */
+    text-align: center;
+    padding: 25px; /* Padding */
+    background: #F5FFFA; /* Light background */
+    position: relative;
+    border-radius: 20px; /* Rounded corners */
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+}
+  
+#header {
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+    margin-bottom: 25px; 
+}
+  
+#logo {
+    position: absolute;
+    top: 40px;
+    left: 100px;
+    width: 150px;
+}
+  
+h1 {
+    font-size: 56px; /* Adjusted font size */
+    margin-bottom: 20px;
+    margin-top: 120px;
+    color: #F7931E; /* Scratch Orange */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+}
+  
+#content {
+    text-align: center;
+}
+  
+#content p {
+    font-size: 28px; /* Adjusted font size */
+    color: #4CBFE6; /* Scratch Green */
+    margin-bottom: 40px;
+}
+  
+#user-name {
+    font-size: 36px; /* Adjusted font size */
+    margin: 20px 0;
+    color: #4C97FF; /* Scratch Blue */
+    font-weight: bold;
+    margin-bottom: 100px;
+}
+  
+#task-name, #task-type {
+    font-size: 30px; /* Adjusted font size */
+    margin: 20px 0;
+    color: #9966FF;
+    margin-bottom: 100px; /* Scratch Purple */
+}
+  
+#date {
+    font-size: 24px; /* Adjusted font size */
+    color: #4CBFE6; /* Scratch Green */
+}
+  
+#footer {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px; 
+}
+  
+#signature {
+    width: 80px; /* Adjusted width */
+}
+  
+#scratch-cat {
+    width: 80px; 
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+  
+#cloud {
+    position: absolute;
+    width: 80px; 
+    left: 40px;
+}
+
+#cloud1 {
+    position: absolute;
+    width: 80px; 
+    right: 60px;
+}
+
+#sun {
+    width: 100px; 
+    position: absolute;
+    top: 20px;
+    right: 40px;
+}
+
+
+#print-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #4CAF50;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  @media print {
+    @page {
+       margin-left: 0.3in;
+       margin-right: 0.3in;
+       margin-top: 0;
+       margin-bottom: 0;
+     }
+     header, footer, button, .no-print {
+        display: none; /* Hides header, footer, buttons, and any element with the class 'no-print' */
+    }
+}

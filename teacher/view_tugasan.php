@@ -8,8 +8,6 @@ $name = $_SESSION['name'];
         $result_tugasan = $conn->query($sql_tugasan);
 
 
-
-
 ?>
 
 <!DOCTYPE html>
@@ -98,9 +96,6 @@ main {
                         <p class="card-text"><?= $row_tugasan["deskripsi_tugasan"] ?></p>
                         <p class="card-text"><strong>Jenis Tugasan:</strong> <?= $row_tugasan["jenis_tugasan"] ?></p>
                         <p class="card-text"><strong>Tarikh Akhir:</strong> <?= date("d F Y", strtotime($row_tugasan["tarikh_due"])) ?></p>
-                        <?php if (!empty($row_tugasan["sijil_path"])): ?>
-                            <a href="<?= $row_tugasan["sijil_path"] ?>" target="_blank" class="btn btn-info btn-sm">Lihat Sijil</a>
-                        <?php endif; ?>
                         <div class="mt-3"> 
                             <input type="hidden" class="jenisTugasan" value="<?= $row_tugasan["jenis_tugasan"] ?>">
                             <input type="hidden" class="tugasanId" value="<?= $row_tugasan["tugasan_id"] ?>">
@@ -111,7 +106,6 @@ main {
                                     data-nama-tugasan="<?= $row_tugasan["nama_tugasan"] ?>"
                                     data-deskripsi-tugasan="<?= $row_tugasan["deskripsi_tugasan"] ?>"
                                     data-jenis-tugasan="<?= $row_tugasan["jenis_tugasan"] ?>"
-                                    data-lampiran-path="<?= $row_tugasan["sijil_path"] ?>"
                                     data-tarikh-due="<?= $row_tugasan["tarikh_due"] ?>">Edit</button>
                             <button type='button' class='btn btn-danger btn-sm' onclick='confirmDeleteTugasan(<?= $row_tugasan["tugasan_id"] ?>)'>Hapus</button>
                         </div>
@@ -170,10 +164,6 @@ main {
             <label for="tarikhDue">Tarikh Akhir:</label>
             <input type="date" class="form-control" id="tarikhDue" name="tarikhDue" required>
           </div>
-          <div class="form-group">
-            <label for="lampiranPath">Lampiran Sijil:</label>
-            <input type="file" class="form-control-file" id="lampiranPath" name="lampiranPath">
-          </div>
         </form>
       </div>
       <div class="modal-footer">
@@ -217,12 +207,7 @@ main {
             <label for="editTarikhDue">Tarikh Akhir:</label>
             <input type="date" class="form-control" id="editTarikhDue" name="editTarikhDue" required>
           </div>
-          <div class="form-group">
-            <label for="editLampiranPath">Lampiran Sijil:</label>
-            <input type="file" class="form-control-file" id="editLampiranPath" name="editLampiranPath">
-          </div>
           <input type="hidden" id="editTugasanId" name="editTugasanId">
-          <input type="hidden" id="oldLampiranPath" name="oldLampiranPath"> 
         </form>
       </div>
       <div class="modal-footer">
@@ -300,7 +285,6 @@ $('#editTugasanModal').on('show.bs.modal', function (event) {
   var deskripsi_tugasan = button.data('deskripsi-tugasan');
   var jenis_tugasan = button.data('jenis-tugasan');
   var tarikh_due = button.data('tarikh-due');
-  var lampiran_path = button.data('lampiran-path');
 
   var modal = $(this);
   modal.find('.modal-body #editTugasanId').val(tugasan_id);
@@ -308,7 +292,6 @@ $('#editTugasanModal').on('show.bs.modal', function (event) {
   modal.find('.modal-body #editDeskripsiTugasan').val(deskripsi_tugasan);
   modal.find('.modal-body #editJenisTugasan').val(jenis_tugasan);
   modal.find('.modal-body #editTarikhDue').val(tarikh_due);
-  modal.find('.modal-body #oldLampiranPath').val(lampiran_path);  
 });
 
 // Handle 'editTugasanForm' submission

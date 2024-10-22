@@ -73,7 +73,7 @@ main {
             <h1 class="text-center mb-4">Senarai Kumpulan</h1>
 
             <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#addGroupModal">Tambah Kumpulan</button>
-            <a href='add_pelajarGP.php' class='btn btn-secondary mb-3'>Tambah/Edit Ahli Kumpulan</a>
+            <a href='add_pelajarGP.php' class='btn btn-secondary mb-3'>Tambah/Sunting Ahli Kumpulan</a>
 
             <?php if ($result_kumpulan->num_rows > 0): ?>
                 <div id="accordion">

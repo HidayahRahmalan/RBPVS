@@ -34,6 +34,12 @@ if (isset($_GET['id'])) {
     main {
         background-color: #e0f2ff; 
     }
+    #myTable th {
+    background-color: #4C97FF; 
+    color: white;
+}
+
+    
     </style>
 </head>
 <body>
@@ -142,6 +148,75 @@ if (isset($_GET['id'])) {
 <?php
 // Fetch students and their submission status for this assignment
 // Adjust this query to include group information if needed
+
+$rubricNames = [];
+$studentCounts = [];
+
+// Fetch all rubric names first
+$sql_all_rubrics = "SELECT nama_rubrik FROM rubrik";
+$result_all_rubrics = $conn->query($sql_all_rubrics);
+
+// Fetch rubric names and initialize counts to zero
+while ($row = $result_all_rubrics->fetch_assoc()) {
+    $rubricNames[] = $row["nama_rubrik"];
+    $studentCounts[] = 0; // Initialize with zero
+}
+
+// Now fetch counts based on submissions
+$sql_rubrik_count = "
+    SELECT r.nama_rubrik, COUNT(py.pelajar_id) AS total_students
+    FROM rubrik r
+    LEFT JOIN penyerahan py ON r.rubrik_id = py.rubrik_id
+    WHERE py.tugasan_id = $tugasan_id
+    GROUP BY r.nama_rubrik";
+
+$result_rubrik_count = $conn->query($sql_rubrik_count);
+
+while ($row_rubrik_count = $result_rubrik_count->fetch_assoc()) {
+    $index = array_search($row_rubrik_count["nama_rubrik"], $rubricNames);
+    if ($index !== false) {
+        $studentCounts[$index] = $row_rubrik_count["total_students"]; // Update count for existing rubric
+    }
+}
+
+$sql_submission_count = "
+ SELECT 
+        CASE 
+            WHEN py.penyerahan_id IS NULL THEN 'Belum Hantar'
+            WHEN py.penyerahan_path2 IS NOT NULL AND py.tarikh_penyerahan2 IS NOT NULL THEN 'Penyerahan 2'
+            WHEN py.penyerahan_path1 IS NOT NULL AND py.tarikh_penyerahan1 IS NOT NULL THEN 'Penyerahan 1'
+        END AS submission_status,
+        COUNT(p.pelajar_id) AS total_students
+    FROM pelajar p
+    LEFT JOIN penyerahan py ON p.pelajar_id = py.pelajar_id AND py.tugasan_id = $tugasan_id
+    GROUP BY submission_status";
+
+$result_submission_count = $conn->query($sql_submission_count);
+
+// Initialize counts for each category
+$belumHantarCount = 0;
+$penyerahan1Count = 0;
+$penyerahan2Count = 0;
+
+// Process the results
+while ($row = $result_submission_count->fetch_assoc()) {
+    switch ($row["submission_status"]) {
+        case 'Belum Hantar':
+            $belumHantarCount = $row["total_students"];
+            break;
+        case 'Penyerahan 1':
+            $penyerahan1Count = $row["total_students"];
+            break;
+        case 'Penyerahan 2':
+            $penyerahan2Count = $row["total_students"];
+            break;
+    }
+}
+
+// Prepare data for the pie chart
+$submissionLabels = ['Belum Hantar', 'Penyerahan 1', 'Penyerahan 2'];
+$submissionCounts = [$belumHantarCount, $penyerahan1Count, $penyerahan2Count];
+
 $sql_pelajar_submission = "SELECT 
     p.nama_pelajar, py.penyerahan_id,
     py.tarikh_penyerahan1, py.komen, py.tarikh_penyerahan2,
@@ -162,19 +237,19 @@ if ($result_pelajar_submission->num_rows > 0):
     <thead>
     <tr>
         <th colspan="2"></th>
-        <th colspan="3">Penyerahan 1 </th>
-        <th colspan="2">Penyerahan 2 </th>
-        <td colspan="4"></td>
+        <th colspan="3" style="background-color: purple;">Penyerahan 1</th>
+      <th colspan="2" style="background-color: orange;">Penyerahan 2</th>
+      <th colspan="4"></th>
     </tr>
     <tr>
         <th>No.</th>
         <th>Nama Murid</th>
-        <th>Tarikh Hantar</th>
-        <th>Komen</th>
-        <th>Fail</th>
-        <th>Tarikh Hantar</th>
-        <th>Fail</th>
-        <th>Link Pautan Pembentangan</th>
+        <th style="background-color: purple;">Tarikh Hantar</th>
+        <th style="background-color: purple;">Komen</th>
+        <th style="background-color: purple;">Fail</th>
+        <th style="background-color: orange;">Tarikh Hantar</th>
+        <th style="background-color: orange;">Fail</th>
+        <th >Link Pautan Pembentangan</th>
         <th>Status</th>
         <th>Gred</th>
         <th>Tugasan</th>
@@ -183,21 +258,26 @@ if ($result_pelajar_submission->num_rows > 0):
     <tbody>
         <?php 
         $no = 1;
-        while ($row_pelajar_submission = $result_pelajar_submission->fetch_assoc()): ?>
+        while ($row_pelajar_submission = $result_pelajar_submission->fetch_assoc()): 
+        
+            $studentNames[] = $row_pelajar_submission["nama_pelajar"];
+            $grades[] = $row_pelajar_submission["markah"] ?? 0;
+            
+            ?>
             <tr>
                 <td><?= $no ?>.</td>
                 <td><?= $row_pelajar_submission["nama_pelajar"] ?></td>
-                <td><?= ($row_pelajar_submission["tarikh_penyerahan1"] != '0000-00-00' && $row_pelajar_submission["tarikh_penyerahan1"] != null) ? date("d F Y", strtotime($row_pelajar_submission["tarikh_penyerahan1"])) : '<center>-</center>' ?></td>
-                <td><?= $row_pelajar_submission["komen"] ?></td>
-                <td>
+                <td style="background-color: #F6CEFC;"><?= ($row_pelajar_submission["tarikh_penyerahan1"] != '0000-00-00' && $row_pelajar_submission["tarikh_penyerahan1"] != null) ? date("d F Y", strtotime($row_pelajar_submission["tarikh_penyerahan1"])) : '<center>-</center>' ?></td>
+                <td style="background-color: #F6CEFC;"><?= $row_pelajar_submission["komen"] ?></td>
+                <td style="background-color: #F6CEFC;">
                     <?php if (!empty($row_pelajar_submission["penyerahan_path1"])): ?>
                         <a href="<?= $row_pelajar_submission["penyerahan_path1"] ?>" target="_blank">Lihat Fail</a>
                     <?php else: ?>
                         <center>-</center>
                     <?php endif; ?>
                 </td>
-                <td><?= ($row_pelajar_submission["tarikh_penyerahan2"] != '0000-00-00' && $row_pelajar_submission["tarikh_penyerahan2"] != null) ? date("d F Y", strtotime($row_pelajar_submission["tarikh_penyerahan2"])) : '<center>-</center>' ?></td>
-                <td>
+                <td style="background-color: #FFDBBB;"><?= ($row_pelajar_submission["tarikh_penyerahan2"] != '0000-00-00' && $row_pelajar_submission["tarikh_penyerahan2"] != null) ? date("d F Y", strtotime($row_pelajar_submission["tarikh_penyerahan2"])) : '<center>-</center>' ?></td>
+                <td style="background-color: #FFDBBB;">
                     <?php if (!empty($row_pelajar_submission["penyerahan_path2"])): ?>
                         <a href="<?= $row_pelajar_submission["penyerahan_path2"] ?>" target="_blank">Lihat Fail</a>
                     <?php else: ?>
@@ -281,6 +361,43 @@ if ($result_pelajar_submission->num_rows > 0):
 <?php else: ?>
     <p>Tiada pelajar dijumpai untuk tugasan ini.</p>
 <?php endif; ?>
+
+
+<br>
+<hr class ="bg-dark mt-4 mb-4">
+
+<div class="card mb-4">
+    <div class="card-header">
+        <h5 class="card-title text-center">Carta Grafik</h5>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <!-- Column for Rubric Chart -->
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h6 class="card-title text-center">Carta Jumlah Pelajar Berdasarkan Rubrik</h6>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="rubricChart5" style="width: 100%; height: 500px;"></canvas>
+                    </div>
+                </div>
+            </div>
+            <!-- Column for Submission Chart -->
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h6 class="card-title text-center">Carta Status Penyerahan Pelajar</h6>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="submissionChart" style="width: 100%; height: 100px;"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
                 </div>
             </div>
 
@@ -697,6 +814,91 @@ document.getElementById('editMarkahForm').addEventListener('submit', function(ev
     })
     .catch(error => {
         console.error('Error:', error);
+    });
+});
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const ctx = document.getElementById('rubricChart5').getContext('2d');
+
+    // Define an array of colors for each bar
+    const barColors = [
+        'rgba(75, 192, 192, 0.6)',
+        'rgba(255, 99, 132, 0.6)',
+        'rgba(54, 162, 235, 0.6)', 
+        'rgba(255, 206, 86, 0.6)', 
+        'rgba(153, 102, 255, 0.6)', 
+        'rgba(255, 159, 64, 0.6)'  
+    ];
+
+    const rubricChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: <?php echo json_encode($rubricNames); ?>,
+            datasets: [{
+                label: 'Jumlah Pelajar Berdasarkan Rubrik',
+                data: <?php echo json_encode($studentCounts); ?>,
+                backgroundColor: barColors,
+                borderColor: 'rgba(0, 0, 0, 1)', 
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        // Set the step size to 1 to avoid decimals
+                        stepSize: 1,
+                        // Use a callback to format the tick labels as integers
+                        callback: function(value) {
+                            return Math.floor(value); // Ensures integer values
+                        }
+                    }
+                }
+            }
+        }
+    });
+});
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const ctx = document.getElementById('submissionChart').getContext('2d');
+
+    const submissionLabels = <?php echo json_encode($submissionLabels); ?>;
+    const submissionCounts = <?php echo json_encode($submissionCounts); ?>;
+
+    const submissionChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: submissionLabels,
+            datasets: [{
+                label: 'Status Penyerahan Pelajar',
+                data: submissionCounts,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.6)', // Belum Hantar
+                    'rgba(54, 162, 235, 0.6)', // Penyerahan 1
+                    'rgba(255, 206, 86, 0.6)'  // Penyerahan 2
+                ],
+                borderColor: 'rgba(0, 0, 0, 1)',
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(tooltipItem) {
+                            return tooltipItem.label + ': ' + tooltipItem.raw;
+                        }
+                    }
+                }
+            }
+        }
     });
 });
 

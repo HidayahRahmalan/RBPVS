@@ -34,6 +34,11 @@ if (isset($_GET['id'])) {
     main {
         background-color: #e0f2ff; 
     }
+    #myTable th {
+    background-color: #4C97FF; 
+    color: white;
+}
+    
     </style>
 </head>
 <body>
@@ -54,7 +59,8 @@ if (isset($_GET['id'])) {
 
             </ol>
         </nav>
-        
+
+
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <a href='view_tugasan.php' class='btn btn-secondary btn-sm'>Kembali</a>
                 <div></div> 
@@ -71,8 +77,8 @@ if (isset($_GET['id'])) {
                     <hr class ="bg-dark">
                     <p><?= $row_tugasan["deskripsi_tugasan"] ?></p><br>
 
-                                                                       <!-- Fetch Kandungan for this tugasan -->
-                                                                       <?php
+                                                   <!-- Fetch Kandungan for this tugasan -->
+                                                   <?php
                                 $tugasan_id = $row_tugasan["tugasan_id"];
                                 $sql_kandungan = "SELECT * FROM KANDUNGAN_TUGASAN WHERE tugasan_id = $tugasan_id ORDER BY URUTAN_KANDUNGAN";
                                 $result_kandungan = $conn->query($sql_kandungan);
@@ -117,6 +123,7 @@ if (isset($_GET['id'])) {
                         </div>
                     <?php endwhile; ?>
 
+
                     <?php if (!empty($row_tugasan["lampiran_path"])): ?>
                             <?php
                             $fileExtension = pathinfo($row_tugasan["lampiran_path"], PATHINFO_EXTENSION);
@@ -133,32 +140,20 @@ if (isset($_GET['id'])) {
                             <?php endif; ?>
                         <?php endif; ?>
                     <br>
-                    
-
+        
 <hr class ="bg-dark">
-<h3 class="mt-4 text-center">Senarai Kumpulan</h3>
+<h3 class="mt-4 text-center">Senarai Murid</h3>
 
 <?php
-// Fetch kumpulan and their submission status for this assignment
+// Fetch students and their submission status for this assignment
 // Adjust this query to include group information if needed
-
 
 $rubricNames = [];
 $studentCounts = [];
 
-// Fetch all rubric names first
-$sql_all_rubrics = "SELECT nama_rubrik FROM rubrik";
-$result_all_rubrics = $conn->query($sql_all_rubrics);
-
-// Fetch rubric names and initialize counts to zero
-while ($row = $result_all_rubrics->fetch_assoc()) {
-    $rubricNames[] = $row["nama_rubrik"];
-    $groupCounts[] = 0; // Initialize with zero
-}
-
-// Now fetch counts based on submissions
+// Fetch the count of students based on rubric names
 $sql_rubrik_count = "
-    SELECT r.nama_rubrik, COUNT(py.kumpulan_id) AS total_group
+    SELECT r.nama_rubrik, COUNT(py.pelajar_id) AS total_students
     FROM rubrik r
     LEFT JOIN penyerahan py ON r.rubrik_id = py.rubrik_id
     WHERE py.tugasan_id = $tugasan_id
@@ -166,85 +161,49 @@ $sql_rubrik_count = "
 
 $result_rubrik_count = $conn->query($sql_rubrik_count);
 
-while ($row_rubrik_count = $result_rubrik_count->fetch_assoc()) {
-    $index = array_search($row_rubrik_count["nama_rubrik"], $rubricNames);
-    if ($index !== false) {
-        $groupCounts[$index] = $row_rubrik_count["total_group"]; // Update count for existing rubric
+if ($result_rubrik_count->num_rows > 0) {
+    while ($row_rubrik_count = $result_rubrik_count->fetch_assoc()) {
+        $rubricNames[] = $row_rubrik_count["nama_rubrik"];
+        $studentCounts[] = $row_rubrik_count["total_students"];
     }
 }
 
-$sql_submission_count = "
- SELECT 
-        CASE 
-            WHEN py.penyerahan_id IS NULL THEN 'Belum Hantar'
-            WHEN py.penyerahan_path2 IS NOT NULL AND py.tarikh_penyerahan2 IS NOT NULL THEN 'Penyerahan 2'
-            WHEN py.penyerahan_path1 IS NOT NULL AND py.tarikh_penyerahan1 IS NOT NULL THEN 'Penyerahan 1'
-        END AS submission_status,
-        COUNT(p.kumpulan_id) AS total_group
-    FROM kumpulan p
-    LEFT JOIN penyerahan py ON p.kumpulan_id = py.kumpulan_id AND py.tugasan_id = $tugasan_id
-    GROUP BY submission_status";
+$studentNames = [];
+$grades = [];
 
-$result_submission_count = $conn->query($sql_submission_count);
-
-// Initialize counts for each category
-$belumHantarCount = 0;
-$penyerahan1Count = 0;
-$penyerahan2Count = 0;
-
-// Process the results
-while ($row = $result_submission_count->fetch_assoc()) {
-    switch ($row["submission_status"]) {
-        case 'Belum Hantar':
-            $belumHantarCount = $row["total_group"];
-            break;
-        case 'Penyerahan 1':
-            $penyerahan1Count = $row["total_group"];
-            break;
-        case 'Penyerahan 2':
-            $penyerahan2Count = $row["total_group"];
-            break;
-    }
-}
-
-// Prepare data for the pie chart
-$submissionLabels = ['Belum Hantar', 'Penyerahan 1', 'Penyerahan 2'];
-$submissionCounts = [$belumHantarCount, $penyerahan1Count, $penyerahan2Count];
-
-
-$sql_kumpulan_submission = "SELECT 
-    k.nama_kumpulan, py.penyerahan_id,
+$sql_pelajar_submission = "SELECT 
+    p.nama_pelajar, py.penyerahan_id,
     py.tarikh_penyerahan1, py.komen, py.tarikh_penyerahan2,
     py.penyerahan_path1, py.penyerahan_path2, py.url_video, py.rubrik_id, py.markah, 
     CASE 
         WHEN py.penyerahan_id IS NOT NULL THEN 'Telah Hantar' 
         ELSE 'Belum Dihantar' 
     END AS status
-FROM kumpulan k 
-LEFT JOIN penyerahan py ON k.kumpulan_id = py.kumpulan_id AND py.tugasan_id = $tugasan_id
+FROM pelajar p 
+LEFT JOIN penyerahan py ON p.pelajar_id = py.pelajar_id AND py.tugasan_id = $tugasan_id
 LEFT JOIN rubrik r ON py.rubrik_id = r.rubrik_id";
 
-$result_kumpulan_submission = $conn->query($sql_kumpulan_submission);
+$result_pelajar_submission = $conn->query($sql_pelajar_submission);
 
-if ($result_kumpulan_submission->num_rows > 0): 
+if ($result_pelajar_submission->num_rows > 0): 
 ?>
 <table id="myTable" class="table table-striped table-bordered" style="background-color: #f0f0f0;">
     <thead>
     <tr>
         <th colspan="2"></th>
-        <th colspan="3">Penyerahan 1 </th>
-        <th colspan="2">Penyerahan 2 </th>
-        <td colspan="4"></td>
+        <th colspan="3" style="background-color: purple;">Penyerahan 1</th>
+      <th colspan="2" style="background-color: orange;">Penyerahan 2</th>
+      <th colspan="4"></th>
     </tr>
     <tr>
         <th>No.</th>
-        <th>Nama Kumpulan</th>
-        <th>Tarikh Hantar</th>
-        <th>Komen</th>
-        <th>Fail</th>
-        <th>Tarikh Hantar</th>
-        <th>Fail</th>
-        <th>Link Pautan Pembentangan</th>
+        <th>Nama Murid</th>
+        <th style="background-color: purple;">Tarikh Hantar</th>
+        <th style="background-color: purple;">Komen</th>
+        <th style="background-color: purple;">Fail</th>
+        <th style="background-color: orange;">Tarikh Hantar</th>
+        <th style="background-color: orange;">Fail</th>
+        <th >Link Pautan Pembentangan</th>
         <th>Status</th>
         <th>Gred</th>
         <th>Tugasan</th>
@@ -253,33 +212,38 @@ if ($result_kumpulan_submission->num_rows > 0):
     <tbody>
         <?php 
         $no = 1;
-        while ($row_kumpulan_submission = $result_kumpulan_submission->fetch_assoc()): ?>
+        while ($row_pelajar_submission = $result_pelajar_submission->fetch_assoc()): 
+        
+            $studentNames[] = $row_pelajar_submission["nama_pelajar"];
+            $grades[] = $row_pelajar_submission["markah"] ?? 0;
+            
+            ?>
             <tr>
                 <td><?= $no ?>.</td>
-                <td><?= $row_kumpulan_submission["nama_kumpulan"] ?></td>
-                <td><?= ($row_kumpulan_submission["tarikh_penyerahan1"] != '0000-00-00' && $row_kumpulan_submission["tarikh_penyerahan1"] != null) ? date("d F Y", strtotime($row_kumpulan_submission["tarikh_penyerahan1"])) : '<center>-</center>' ?></td>
-                <td><?= $row_kumpulan_submission["komen"] ?></td>
-                <td>
-                    <?php if (!empty($row_kumpulan_submission["penyerahan_path1"])): ?>
-                        <a href="<?= $row_kumpulan_submission["penyerahan_path1"] ?>" target="_blank">Lihat Fail</a>
+                <td><?= $row_pelajar_submission["nama_pelajar"] ?></td>
+                <td style="background-color: #F6CEFC;"><?= ($row_pelajar_submission["tarikh_penyerahan1"] != '0000-00-00' && $row_pelajar_submission["tarikh_penyerahan1"] != null) ? date("d F Y", strtotime($row_pelajar_submission["tarikh_penyerahan1"])) : '<center>-</center>' ?></td>
+                <td style="background-color: #F6CEFC;"><?= $row_pelajar_submission["komen"] ?></td>
+                <td style="background-color: #F6CEFC;">
+                    <?php if (!empty($row_pelajar_submission["penyerahan_path1"])): ?>
+                        <a href="<?= $row_pelajar_submission["penyerahan_path1"] ?>" target="_blank">Lihat Fail</a>
                     <?php else: ?>
                         <center>-</center>
                     <?php endif; ?>
                 </td>
-                <td><?= ($row_kumpulan_submission["tarikh_penyerahan2"] != '0000-00-00' && $row_kumpulan_submission["tarikh_penyerahan2"] != null) ? date("d F Y", strtotime($row_kumpulan_submission["tarikh_penyerahan2"])) : '<center>-</center>' ?></td>
-                <td>
-                    <?php if (!empty($row_kumpulan_submission["penyerahan_path2"])): ?>
-                        <a href="<?= $row_kumpulan_submission["penyerahan_path2"] ?>" target="_blank">Lihat Fail</a>
+                <td style="background-color: #FFDBBB;"><?= ($row_pelajar_submission["tarikh_penyerahan2"] != '0000-00-00' && $row_pelajar_submission["tarikh_penyerahan2"] != null) ? date("d F Y", strtotime($row_pelajar_submission["tarikh_penyerahan2"])) : '<center>-</center>' ?></td>
+                <td style="background-color: #FFDBBB;">
+                    <?php if (!empty($row_pelajar_submission["penyerahan_path2"])): ?>
+                        <a href="<?= $row_pelajar_submission["penyerahan_path2"] ?>" target="_blank">Lihat Fail</a>
                     <?php else: ?>
                         <center>-</center>
                     <?php endif; ?>
                 </td>
-                <td><a target="_blank" href="<?= $row_kumpulan_submission['url_video'] ?>"><?= $row_kumpulan_submission['url_video'] ?></a></td>
-                <td><?= $row_kumpulan_submission["status"] ?></td>
+                <td><a target="_blank" href="<?= $row_pelajar_submission['url_video'] ?>"><?= $row_pelajar_submission['url_video'] ?></a></td>
+                <td><?= $row_pelajar_submission["status"] ?></td>
                 <td>
                     <?php 
                     // Fetch markah dari database 
-                    $rubrik_id = $row_kumpulan_submission["rubrik_id"]; 
+                    $rubrik_id = $row_pelajar_submission["rubrik_id"]; 
         
                     // Use a prepared statement to prevent SQL injection
                     $stmt = $conn->prepare("SELECT nama_rubrik FROM rubrik WHERE rubrik_id = ?");
@@ -296,22 +260,22 @@ if ($result_kumpulan_submission->num_rows > 0):
                     ?>
                 </td>
                 <td>
-                    <?php if ($row_kumpulan_submission["status"] === 'Telah Hantar'): ?>
-                        <?php if ($row_kumpulan_submission["tarikh_penyerahan1"] != '0000-00-00' && $row_kumpulan_submission["tarikh_penyerahan1"] != null && 
-                                  ($row_kumpulan_submission["tarikh_penyerahan2"] == '0000-00-00' || $row_kumpulan_submission["tarikh_penyerahan2"] == null)): ?>
+                    <?php if ($row_pelajar_submission["status"] === 'Telah Hantar'): ?>
+                        <?php if ($row_pelajar_submission["tarikh_penyerahan1"] != '0000-00-00' && $row_pelajar_submission["tarikh_penyerahan1"] != null && 
+                                  ($row_pelajar_submission["tarikh_penyerahan2"] == '0000-00-00' || $row_pelajar_submission["tarikh_penyerahan2"] == null)): ?>
                             <button type='button' class='btn btn-primary btn-sm' 
                                     data-toggle='modal' data-target='#beriKomenModal'
-                                    data-penyerahan-id="<?= $row_kumpulan_submission["penyerahan_id"] ?>"
-                                    data-nama-kumpulan="<?= $row_kumpulan_submission["nama_kumpulan"] ?>">
+                                    data-penyerahan-id="<?= $row_pelajar_submission["penyerahan_id"] ?>"
+                                    data-nama-pelajar="<?= $row_pelajar_submission["nama_pelajar"] ?>">
                                 Beri Komen
                             </button>
                         <?php endif; ?>
-                        <?php if ($row_kumpulan_submission["tarikh_penyerahan2"] != '0000-00-00' && $row_kumpulan_submission["tarikh_penyerahan2"] != null): ?>
+                        <?php if ($row_pelajar_submission["tarikh_penyerahan2"] != '0000-00-00' && $row_pelajar_submission["tarikh_penyerahan2"] != null): ?>
                             <?php
                             // Check if a markah has already been assigned
                             $sql_check_markah = "SELECT * FROM penyerahan WHERE penyerahan_id = ? AND rubrik_id IS NOT NULL";
                             $stmt = $conn->prepare($sql_check_markah);
-                            $stmt->bind_param("i", $row_kumpulan_submission["penyerahan_id"]);
+                            $stmt->bind_param("i", $row_pelajar_submission["penyerahan_id"]);
                             $stmt->execute();
                             $result_check_markah = $stmt->get_result();
         
@@ -321,8 +285,8 @@ if ($result_kumpulan_submission->num_rows > 0):
                             <button type='button' class='btn btn-primary btn-sm' 
                                     data-toggle='modal' 
                                     data-target='#editMarkahModal'
-                                    data-penyerahan-id="<?= $row_kumpulan_submission['penyerahan_id'] ?>"
-                                    data-markah="<?= $row_kumpulan_submission['markah'] ?>">
+                                    data-penyerahan-id="<?= $row_pelajar_submission['penyerahan_id'] ?>"
+                                    data-markah="<?= $row_pelajar_submission['markah'] ?>">
                             Edit Markah
                             </button>
                             <?php
@@ -331,8 +295,8 @@ if ($result_kumpulan_submission->num_rows > 0):
                                 ?>
                             <button type='button' class='btn btn-success btn-sm' 
                                     data-toggle='modal' data-target='#beriNilaiModal'
-                                    data-penyerahan-id="<?= $row_kumpulan_submission["penyerahan_id"] ?>"
-                                    data-nama-kumpulan="<?= $row_kumpulan_submission["nama_kumpulan"] ?>">
+                                    data-penyerahan-id="<?= $row_pelajar_submission["penyerahan_id"] ?>"
+                                    data-nama-pelajar="<?= $row_pelajar_submission["nama_pelajar"] ?>">
                                 Beri Nilai
                             </button>
                             <?php
@@ -342,50 +306,34 @@ if ($result_kumpulan_submission->num_rows > 0):
                     <?php endif; ?>
                 </td>
             </tr>
-
-<?php endwhile; ?>
+            
+        <?php 
+        $no++;
+        endwhile; ?>
     </tbody>
-                    </table>
-                    <?php else: ?>
-                        <p>Tiada kumpulan dijumpai untuk tugasan ini.</p>
-                    <?php endif; ?>
+</table>
+<?php else: ?>
+    <p>Tiada pelajar dijumpai untuk tugasan ini.</p>
+<?php endif; ?>
+
+
+<canvas id="gradesChart" width="400" height="200"></canvas>
+
+<canvas id="rubricChart" width="400" height="200"></canvas>
+<canvas id="rubricChart1" width="400" height="200"></canvas>
+<canvas id="rubricChart2" width="400" height="200"></canvas>
+<canvas id="rubricChart3" width="400" height="200"></canvas>
+<canvas id="rubricChart4" width="400" height="200"></canvas>
+<canvas id="rubricChart5" width="400" height="200"></canvas>
+<canvas id="rubricChart6" width="400" height="200"></canvas>
+<canvas id="rubricChart7" width="400" height="200"></canvas>
                 </div>
             </div>
 
-            <div class="card mb-4">
-    <div class="card-header">
-        <h5 class="card-title text-center">Carta Grafik</h5>
-    </div>
-    <div class="card-body">
-        <div class="row">
-            <!-- Column for Rubric Chart -->
-            <div class="col-md-6">
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h6 class="card-title text-center">Carta Jumlah Kumpulan Berdasarkan Rubrik</h6>
-                    </div>
-                    <div class="card-body">
-                        <canvas id="rubricChart5" style="width: 100%; height: 500px;"></canvas>
-                    </div>
-                </div>
-            </div>
-            <!-- Column for Submission Chart -->
-            <div class="col-md-6">
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h6 class="card-title text-center">Carta Status Penyerahan Kumpulan</h6>
-                    </div>
-                    <div class="card-body">
-                        <canvas id="submissionChart" style="width: 100%; height: 100px;"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
         </main>
     </div>
 </div>
+
 
     <!-- Add Kandungan Projek modal -->
     <div class="modal fade" id="addKandunganModal" tabindex="-1" role="dialog" aria-labelledby="addKandunganModalLabel" aria-hidden="true">
@@ -680,27 +628,6 @@ function confirmDeleteKandungan(kandungan_tugasan_id) {
     }
 }
 
-// Get all elements with class 'jenisTugasan' and 'tugasanId'
-var jenisTugasans = document.querySelectorAll('.jenisTugasan');
-var tugasanIds = document.querySelectorAll('.tugasanId');
-
-// Add event listener to each 'viewTugasanDetail' button
-document.querySelectorAll('#viewTugasanDetail').forEach(function(button, index) {
-  button.addEventListener('click', function(event) {
-    event.preventDefault();
-
-    // Get the corresponding jenisTugasan and tugasanId values
-    var jenisTugasan = jenisTugasans[index].value;
-    var tugasanId = tugasanIds[index].value;
-
-    if (jenisTugasan === 'individu') {
-      window.location.href = 'view_individu_tugasan.php?id=' + tugasanId;
-    } else if (jenisTugasan === 'kumpulan') {
-      window.location.href = 'view_kumpulan_tugasan.php?id=' + tugasanId;
-    }
-  });
-});
-
 // Handle 'Beri Komen' button click to set penyerahan_id and nama_pelajar in the modal
 $('#beriKomenModal').on('show.bs.modal', function (event) {
     var button = $(event.relatedTarget);
@@ -819,45 +746,24 @@ document.getElementById('editMarkahForm').addEventListener('submit', function(ev
     });
 });
 
-
-
 document.addEventListener('DOMContentLoaded', function() {
-    const ctx = document.getElementById('rubricChart5').getContext('2d');
-
-    // Define an array of colors for each bar
-    const barColors = [
-        'rgba(75, 192, 192, 0.6)',
-        'rgba(255, 99, 132, 0.6)',
-        'rgba(54, 162, 235, 0.6)', 
-        'rgba(255, 206, 86, 0.6)', 
-        'rgba(153, 102, 255, 0.6)', 
-        'rgba(255, 159, 64, 0.6)'  
-    ];
-
-    const rubricChart = new Chart(ctx, {
-        type: 'bar',
+    const ctx = document.getElementById('gradesChart').getContext('2d');
+    const gradesChart = new Chart(ctx, {
+        type: 'bar', // Change this to 'line' for a line chart
         data: {
-            labels: <?php echo json_encode($rubricNames); ?>,
+            labels: <?php echo json_encode($studentNames); ?>, // PHP array of student names
             datasets: [{
-                label: 'Jumlah Kumpulan Berdasarkan Rubrik',
-                data: <?php echo json_encode($studentCounts); ?>,
-                backgroundColor: barColors,
-                borderColor: 'rgba(0, 0, 0, 1)', 
+                label: 'Gred Pelajar',
+                data: <?php echo json_encode($grades); ?>, // PHP array of grades
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
                 borderWidth: 1
             }]
         },
         options: {
             scales: {
                 y: {
-                    beginAtZero: true,
-                    ticks: {
-                        // Set the step size to 1 to avoid decimals
-                        stepSize: 1,
-                        // Use a callback to format the tick labels as integers
-                        callback: function(value) {
-                            return Math.floor(value); // Ensures integer values
-                        }
-                    }
+                    beginAtZero: true
                 }
             }
         }
@@ -866,25 +772,48 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 document.addEventListener('DOMContentLoaded', function() {
-    const ctx = document.getElementById('submissionChart').getContext('2d');
-
-    const submissionLabels = <?php echo json_encode($submissionLabels); ?>;
-    const submissionCounts = <?php echo json_encode($submissionCounts); ?>;
-
-    const submissionChart = new Chart(ctx, {
-        type: 'pie',
+    const ctx = document.getElementById('rubricChart').getContext('2d');
+    const rubricChart = new Chart(ctx, {
+        type: 'bar', // Change to 'pie' or 'line' if desired
         data: {
-            labels: submissionLabels,
+            labels: <?php echo json_encode($rubricNames); ?>, // PHP array of rubric names
             datasets: [{
-                label: 'Status Penyerahan Pelajar',
-                data: submissionCounts,
+                label: 'Jumlah Pelajar Berdasarkan Rubrik',
+                data: <?php echo json_encode($studentCounts); ?>, // PHP array of student counts
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const ctx = document.getElementById('rubricChart1').getContext('2d');
+    const rubricChart = new Chart(ctx, {
+        type: 'doughnut', // Change to 'pie' if you prefer a pie chart
+        data: {
+            labels: <?php echo json_encode($rubricNames); ?>, // PHP array of rubric names
+            datasets: [{
+                label: 'Jumlah Pelajar Berdasarkan Rubrik',
+                data: <?php echo json_encode($studentCounts); ?>, // PHP array of student counts
                 backgroundColor: [
-                    'rgba(255, 99, 132, 0.6)', // Belum Hantar
-                    'rgba(54, 162, 235, 0.6)', // Penyerahan 1
-                    'rgba(255, 206, 86, 0.6)'  // Penyerahan 2
+                    'rgba(75, 192, 192, 0.6)',
+                    'rgba(255, 99, 132, 0.6)',
+                    'rgba(54, 162, 235, 0.6)',
+                    'rgba(255, 206, 86, 0.6)',
+                    'rgba(153, 102, 255, 0.6)',
+                    'rgba(255, 159, 64, 0.6)'
                 ],
-                borderColor: 'rgba(0, 0, 0, 1)',
-                borderWidth: 2
+                borderColor: 'rgba(255, 255, 255, 1)',
+                borderWidth: 1
             }]
         },
         options: {
@@ -896,7 +825,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 tooltip: {
                     callbacks: {
                         label: function(tooltipItem) {
-                            return tooltipItem.label + ': ' + tooltipItem.raw;
+                            return tooltipItem.label + ': ' + tooltipItem.raw; // Show label and value
                         }
                     }
                 }
@@ -905,6 +834,185 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+
+document.addEventListener('DOMContentLoaded', function() {
+    const ctx = document.getElementById('rubricChart2').getContext('2d');
+    const rubricChart = new Chart(ctx, {
+        type: 'line', // Change to 'line'
+        data: {
+            labels: <?php echo json_encode($rubricNames); ?>,
+            datasets: [{
+                label: 'Jumlah Pelajar Berdasarkan Rubrik',
+                data: <?php echo json_encode($studentCounts); ?>,
+                fill: false,
+                borderColor: 'rgba(75, 192, 192, 1)',
+                tension: 0.1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const ctx = document.getElementById('rubricChart3').getContext('2d');
+    const rubricChart = new Chart(ctx, {
+        type: 'radar', // Change to 'radar'
+        data: {
+            labels: <?php echo json_encode($rubricNames); ?>,
+            datasets: [{
+                label: 'Jumlah Pelajar Berdasarkan Rubrik',
+                data: <?php echo json_encode($studentCounts); ?>,
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                r: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+});
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const ctx = document.getElementById('rubricChart4').getContext('2d');
+    const rubricChart = new Chart(ctx, {
+        type: 'polarArea', // Change to 'polarArea'
+        data: {
+            labels: <?php echo json_encode($rubricNames); ?>,
+            datasets: [{
+                label: 'Jumlah Pelajar Berdasarkan Rubrik',
+                data: <?php echo json_encode($studentCounts); ?>,
+                backgroundColor: [
+                    'rgba(75, 192, 192, 0.6)',
+                    'rgba(255, 99, 132, 0.6)',
+                    'rgba(54, 162, 235, 0.6)',
+                    'rgba(255, 206, 86, 0.6)',
+                    'rgba(153, 102, 255, 0.6)',
+                    'rgba(255, 159, 64, 0.6)'
+                ]
+            }]
+        },
+        options: {
+            responsive: true
+        }
+    });
+});
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const ctx = document.getElementById('rubricChart5').getContext('2d');
+    const rubricChart = new Chart(ctx, {
+        type: 'bar', // Change to 'bar'
+        data: {
+            labels: <?php echo json_encode($rubricNames); ?>,
+            datasets: [{
+                label: 'Jumlah Pelajar Berdasarkan Rubrik',
+                data: <?php echo json_encode($studentCounts); ?>,
+                backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+});
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const ctx = document.getElementById('rubricChart6').getContext('2d');
+    const rubricChart = new Chart(ctx, {
+        type: 'pie', // Set the chart type to 'pie'
+        data: {
+            labels: <?php echo json_encode($rubricNames); ?>, // PHP array of rubric names
+            datasets: [{
+                label: 'Jumlah Pelajar Berdasarkan Rubrik',
+                data: <?php echo json_encode($studentCounts); ?>, // PHP array of student counts
+                backgroundColor: [
+                    'rgba(75, 192, 192, 0.6)',
+                    'rgba(255, 99, 132, 0.6)',
+                    'rgba(54, 162, 235, 0.6)',
+                    'rgba(255, 206, 86, 0.6)',
+                    'rgba(153, 102, 255, 0.6)',
+                    'rgba(255, 159, 64, 0.6)'
+                ],
+                borderColor: 'rgba(255, 255, 255, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(tooltipItem) {
+                            return tooltipItem.label + ': ' + tooltipItem.raw; // Show label and value
+                        }
+                    }
+                }
+            }
+        }
+    });
+});
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const ctx = document.getElementById('rubricChart7').getContext('2d');
+    const rubricChart = new Chart(ctx, {
+        type: 'bar', // Set the chart type to 'bar'
+        data: {
+            labels: <?php echo json_encode($rubricNames); ?>, // PHP array of rubric names
+            datasets: [{
+                label: 'Jumlah Pelajar Berdasarkan Rubrik',
+                data: <?php echo json_encode($studentCounts); ?>, // PHP array of student counts
+                backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            indexAxis: 'y', // Set the index axis to 'y' for a horizontal bar chart
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(tooltipItem) {
+                            return tooltipItem.label + ': ' + tooltipItem.raw; // Show label and value
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+});
 </script>
 
 </html>
+

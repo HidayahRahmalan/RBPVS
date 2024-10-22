@@ -42,12 +42,12 @@ $result_pelajar = $conn->query($sql_pelajar);
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
             <li class="breadcrumb-item" aria-current="page"><a href="kumpulan.php">Senarai Kumpulan</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Tambah/Edit Ahli Kumpulan</li>
+                <li class="breadcrumb-item active" aria-current="page">Tambah/Sunting Ahli Kumpulan</li>
             </ol>
         </nav>
 
         <a href='kumpulan.php' class='btn btn-secondary btn-sm'>Kembali</a>
-            <h1 class="text-center mb-4">Tambah/Edit Ahli Kumpulan</h1>
+            <h1 class="text-center mb-4">Tambah/Sunting Ahli Kumpulan</h1>
 
 
             <div class="card"> 
@@ -67,7 +67,7 @@ $result_pelajar = $conn->query($sql_pelajar);
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="availableStudents">Available Pelajar:</label>
+                    <label for="availableStudents">Senarai Pelajar yang belum  ditugaskan ke Kumpulan:</label>
                     <select class="form-control" id="availableStudents" name="availableStudents[]" multiple size="10">
                         <?php
                         // Populate the list with all students that not assigned yet
@@ -83,7 +83,7 @@ $result_pelajar = $conn->query($sql_pelajar);
                     <button type="submit" class="btn btn-primary" id="saveAssignmentsButton">Kemaskini Ahli Kumpulan</button>
                 </div>
                 <div class="form-group">
-                    <label for="assignedStudents">Assigned Pelajar:</label>
+                    <label for="assignedStudents">Senarai Pelajar yang berada di dalam Kumpulan:</label>
                     <select class="form-control" id="assignedStudents" name="assignedStudents[]" multiple size="10">
                     </select>
                 </div>

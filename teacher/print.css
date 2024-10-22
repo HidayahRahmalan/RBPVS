@@ -1,0 +1,18 @@
+/* print.css */
+body * { 
+    visibility: hidden; 
+  }
+  
+  #certificate, #certificate * { 
+    visibility: visible; 
+  }
+  
+  #certificate {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: auto;
+    border: none;
+    background: white; 
+  }

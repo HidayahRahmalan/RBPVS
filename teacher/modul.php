@@ -22,6 +22,23 @@ main {
     background-color: #e0f2ff; /* Light blue background */
 }
 
+#myTable {
+    border-collapse: collapse; 
+    width: 100%;
+}
+
+#myTable th, #myTable td {
+    border: 1px solid #000; 
+    padding: 8px;
+    text-align: left;
+}
+
+#myTable th {
+    background-color: #4C97FF; 
+    color: white;
+}
+
+
     </style>
 </head>
 <body>
