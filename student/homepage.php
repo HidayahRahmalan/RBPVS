@@ -74,7 +74,7 @@ main {
 
 <div class="jumbotron bg-light rounded-corners text-center"> 
   <h1 class="display-4" style="font-size: 3rem;">Selamat Datang, Murid!</h1>
-  <p class="lead">Mari terokai platform modul Sistem Pengaturcaraan! </p>
+  <p class="lead">Platform Digital Topik 6 Reka Bentuk Pengaturcaraan Visual Scratch</p>
 </div>
 
 </main>
@@ -88,11 +88,10 @@ main {
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 
-   // Get the username from your backend or data source
 var username = '<?php echo $name; ?>'; // Replace with actual username
 
 // Display the username and personalized greeting in the jumbotron
-var jumbotronHeading = document.querySelector('.jumbotron h1');
+var jumbotronHeading = document.querySelector('.jumbotron h2');
 var currentHour = new Date().getHours();
 var greeting = "";
 if (currentHour < 12) {

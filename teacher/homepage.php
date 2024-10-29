@@ -75,7 +75,7 @@ main {
 
 <div class="jumbotron bg-light rounded-corners text-center"> 
   <h1 class="display-4" style="font-size: 3rem;">Selamat Datang, Cikgu!</h1>
-  <p class="lead">Mari terokai platform modul Sistem Pengaturcaraan! </p>
+  <p class="lead">Platform Digital Topik 6 Reka Bentuk Pengaturcaraan Visual Scratch</p>
 </div>
 
 
@@ -116,7 +116,7 @@ main {
         }
     });
 
-   // Get the username from your backend or data source
+
 var username = '<?php echo $name; ?>'; // Replace with actual username
 
 // Display the username and personalized greeting in the jumbotron
@@ -133,4 +133,3 @@ if (currentHour < 12) {
 jumbotronHeading.textContent = `${greeting} Cikgu ${username}!`; 
 </script>
 </html>
-

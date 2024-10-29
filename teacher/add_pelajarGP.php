@@ -78,8 +78,8 @@ $result_pelajar = $conn->query($sql_pelajar);
                     </select>
                 </div>
                 <div class="text-center">
-                    <button type="button" class="btn btn-success" id="assignButton">Tambah <i class="fas fa-arrow-right"></i></button>
-                    <button type="button" class="btn btn-danger" id="removeButton"><i class="fas fa-arrow-left"></i> Hapus</button>
+                    <button type="button" class="btn btn-success" id="assignButton">Tambah <i class="fas fa-arrow-down"></i></button>
+                    <button type="button" class="btn btn-danger" id="removeButton"><i class="fas fa-arrow-up"></i> Hapus</button>
                     <button type="submit" class="btn btn-primary" id="saveAssignmentsButton">Kemaskini Ahli Kumpulan</button>
                 </div>
                 <div class="form-group">

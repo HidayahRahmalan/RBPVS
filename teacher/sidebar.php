@@ -19,7 +19,7 @@
                         <a class="nav-link" href="rubrik.php">Rubrik</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="rubrik.php">RPH</a>
+                        <a class="nav-link" href="rph.php">RPH</a>
                     </li>
                 </ul>
             </nav>

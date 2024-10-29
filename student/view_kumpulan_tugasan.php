@@ -1,5 +1,6 @@
 <?php
 include 'connect.php';
+$name = $_SESSION['name'];
 
 // Fetch the Tugasan details based on the 'id' passed in the URL
 if (isset($_GET['id'])) {
