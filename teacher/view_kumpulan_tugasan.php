@@ -34,6 +34,17 @@ if (isset($_GET['id'])) {
     main {
         background-color: #e0f2ff; 
     }
+
+    #myTable {
+    border-collapse: collapse; 
+    width: 100%;
+}
+
+
+#myTable th {
+    background-color: #4C97FF; 
+    color: white;
+}
     </style>
 </head>
 <body>
@@ -232,18 +243,18 @@ if ($result_kumpulan_submission->num_rows > 0):
     <thead>
     <tr>
         <th colspan="2"></th>
-        <th colspan="3">Penyerahan 1 </th>
-        <th colspan="2">Penyerahan 2 </th>
-        <td colspan="4"></td>
+        <th colspan="3" style="background-color: purple;">Penyerahan 1</th>
+      <th colspan="2" style="background-color: orange;">Penyerahan 2</th>
+        <th colspan="4"></th>
     </tr>
     <tr>
         <th>No.</th>
         <th>Nama Kumpulan</th>
-        <th>Tarikh Hantar</th>
-        <th>Komen</th>
-        <th>Fail</th>
-        <th>Tarikh Hantar</th>
-        <th>Fail</th>
+        <th style="background-color: purple;">Tarikh Hantar</th>
+        <th style="background-color: purple;">Komen</th>
+        <th style="background-color: purple;">Fail</th>
+        <th style="background-color: orange;">Tarikh Hantar</th>
+        <th style="background-color: orange;">Fail</th>
         <th>Link Pautan Pembentangan</th>
         <th>Status</th>
         <th>Gred</th>
@@ -257,17 +268,17 @@ if ($result_kumpulan_submission->num_rows > 0):
             <tr>
                 <td><?= $no ?>.</td>
                 <td><?= $row_kumpulan_submission["nama_kumpulan"] ?></td>
-                <td><?= ($row_kumpulan_submission["tarikh_penyerahan1"] != '0000-00-00' && $row_kumpulan_submission["tarikh_penyerahan1"] != null) ? date("d F Y", strtotime($row_kumpulan_submission["tarikh_penyerahan1"])) : '<center>-</center>' ?></td>
-                <td><?= $row_kumpulan_submission["komen"] ?></td>
-                <td>
+                <td style="background-color: #F6CEFC;"><?= ($row_kumpulan_submission["tarikh_penyerahan1"] != '0000-00-00' && $row_kumpulan_submission["tarikh_penyerahan1"] != null) ? date("d F Y", strtotime($row_kumpulan_submission["tarikh_penyerahan1"])) : '<center>-</center>' ?></td>
+                <td style="background-color: #F6CEFC;"><?= $row_kumpulan_submission["komen"] ?></td>
+                <td style="background-color: #F6CEFC;">
                     <?php if (!empty($row_kumpulan_submission["penyerahan_path1"])): ?>
                         <a href="<?= $row_kumpulan_submission["penyerahan_path1"] ?>" target="_blank">Lihat Fail</a>
                     <?php else: ?>
                         <center>-</center>
                     <?php endif; ?>
                 </td>
-                <td><?= ($row_kumpulan_submission["tarikh_penyerahan2"] != '0000-00-00' && $row_kumpulan_submission["tarikh_penyerahan2"] != null) ? date("d F Y", strtotime($row_kumpulan_submission["tarikh_penyerahan2"])) : '<center>-</center>' ?></td>
-                <td>
+                <td style="background-color: #FFDBBB;"><?= ($row_kumpulan_submission["tarikh_penyerahan2"] != '0000-00-00' && $row_kumpulan_submission["tarikh_penyerahan2"] != null) ? date("d F Y", strtotime($row_kumpulan_submission["tarikh_penyerahan2"])) : '<center>-</center>' ?></td>
+                <td style="background-color: #FFDBBB;">
                     <?php if (!empty($row_kumpulan_submission["penyerahan_path2"])): ?>
                         <a href="<?= $row_kumpulan_submission["penyerahan_path2"] ?>" target="_blank">Lihat Fail</a>
                     <?php else: ?>
@@ -352,7 +363,7 @@ if ($result_kumpulan_submission->num_rows > 0):
                 </div>
             </div>
 
-            <div class="card mb-4">
+            <div class="card mb-4" style="background-color: #e0f2ff;">
     <div class="card-header">
         <h5 class="card-title text-center">Carta Grafik</h5>
     </div>
@@ -361,7 +372,7 @@ if ($result_kumpulan_submission->num_rows > 0):
             <!-- Column for Rubric Chart -->
             <div class="col-md-6">
                 <div class="card mb-4">
-                    <div class="card-header">
+                    <div class="card-header" style="background-color: #a0c1d9;">
                         <h6 class="card-title text-center">Carta Jumlah Kumpulan Berdasarkan Rubrik</h6>
                     </div>
                     <div class="card-body">
@@ -372,7 +383,7 @@ if ($result_kumpulan_submission->num_rows > 0):
             <!-- Column for Submission Chart -->
             <div class="col-md-6">
                 <div class="card mb-4">
-                    <div class="card-header">
+                    <div class="card-header" style="background-color: #a0c1d9;">
                         <h6 class="card-title text-center">Carta Status Penyerahan Kumpulan</h6>
                     </div>
                     <div class="card-body">

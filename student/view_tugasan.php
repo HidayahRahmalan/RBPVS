@@ -127,7 +127,7 @@ main {
                                             }
                                             if (!is_null($submission_row["rubrik_id"])) {
                                             echo "<p class='card-text'><strong>Gred:</strong> " . $submission_row["nama_rubrik"] . "</p>";
-                                            echo "<button class='btn btn-success btn-sm' onclick=\"window.location.href='certificate.php?tugasan_id=" . $tugasan_id . "';\">Cetak Sijil</button>";
+                                            echo "<button class='btn btn-success btn-sm' onclick=\"window.open('certificate.php?tugasan_id=" . $tugasan_id . "', '_blank');\">Cetak Sijil</button>";
                                             }
                                             } else {
                                             echo "<p class='card-text'><strong>Status:</strong> Belum Hantar</p>";

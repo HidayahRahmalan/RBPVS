@@ -196,23 +196,23 @@ if ($result_submissions->num_rows > 0) {
     <?php else: ?>
         <table class="table table-striped table-bordered table-sm">
         <tr>
-                <th colspan ="2" class="text-center">Status Penyerahan 1</th>
+                <th colspan ="2" class="text-center text-light" style="background-color: purple;">Status Penyerahan 1</th>
             </tr>
             <tr>
-                <th>Telah hantar pada:</th>
-                <td>
+                <th style="background-color: #F6CEFC;">Telah hantar pada:</th>
+                <td style="background-color: #F6CEFC;">
                      <?= date("d F Y", strtotime($submission_info['tarikh_penyerahan1'])) ?><br>
                 </td>
             </tr>
             <tr>
-                <th>Fail:</th>
-                <td>
+                <th style="background-color: #F6CEFC;">Fail:</th>
+                <td style="background-color: #F6CEFC;">
                    <a target="_blank" href="<?= $submission_info['penyerahan_path1'] ?>"><?= basename($submission_info['penyerahan_path1']) ?></a><br>
                 </td>
             </tr>
             <tr>
-                <th>Komen:</th>
-                <td>
+                <th style="background-color: #F6CEFC;">Komen:</th>
+                <td style="background-color: #F6CEFC;">
                      <?= !empty($submission_info['komen']) ? $submission_info['komen'] : 'Belum ada komen'; ?>
                 </td>
             </tr>
@@ -229,23 +229,23 @@ if ($result_submissions->num_rows > 0) {
 <?php else: ?>
 <table class="table table-striped table-bordered table-sm">
 <tr>
-<th colspan ="2" class="text-center">Status Penyerahan 2</th>
+<th colspan ="2" class="text-center text-light" style="background-color: orange;">Status Penyerahan 2</th>
 </tr>
 <tr>
-    <th>Telah hantar pada:</th>
-    <td>
+    <th style="background-color: #FFDBBB;">Telah hantar pada:</th>
+    <td style="background-color: #FFDBBB;">
          <?= date("d F Y", strtotime($submission_info['tarikh_penyerahan2'])) ?>
     </td>
 </tr>
 <tr>
-    <th>Fail:</th>
-    <td>
+    <th style="background-color: #FFDBBB;">Fail:</th>
+    <td style="background-color: #FFDBBB;">
        <a target="_blank" href="<?= $submission_info['penyerahan_path2'] ?>"><?= basename($submission_info['penyerahan_path2']) ?></a><br>
     </td>
 </tr>
 <tr>
-    <th>Gred:</th>
-    <td>
+    <th style="background-color: #FFDBBB;">Gred:</th>
+    <td style="background-color: #FFDBBB;">
         <?= !empty($submission_info['nama_rubrik']) ? $submission_info['nama_rubrik'] : 'Belum dinilai'; ?>
     </td>
 </tr>
@@ -263,8 +263,8 @@ if ($result_submissions->num_rows > 0) {
 <?php else: ?>
     <table class="table table-striped table-bordered mt-4">
         <tr>
-            <th>Video Pembentangan</th>
-            <td>
+            <th style="background-color: #e0f2ff;">Video Pembentangan</th>
+            <td style="background-color: #e0f2ff;">
                 URL: <a target="_blank" href="<?= $submission_info['url_video'] ?>"><?= $submission_info['url_video'] ?></a><br>
                 <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#editSubmissionModal3" 
         data-submission-id="<?= $submission_info['penyerahan_id'] ?>" 

@@ -366,7 +366,7 @@ if ($result_pelajar_submission->num_rows > 0):
 <br>
 <hr class ="bg-dark mt-4 mb-4">
 
-<div class="card mb-4">
+<div class="card mb-4" style="background-color: #e0f2ff;">
     <div class="card-header">
         <h5 class="card-title text-center">Carta Grafik</h5>
     </div>
@@ -375,7 +375,7 @@ if ($result_pelajar_submission->num_rows > 0):
             <!-- Column for Rubric Chart -->
             <div class="col-md-6">
                 <div class="card mb-4">
-                    <div class="card-header">
+                    <div class="card-header" style="background-color: #a0c1d9;">
                         <h6 class="card-title text-center">Carta Jumlah Pelajar Berdasarkan Rubrik</h6>
                     </div>
                     <div class="card-body">
@@ -386,7 +386,7 @@ if ($result_pelajar_submission->num_rows > 0):
             <!-- Column for Submission Chart -->
             <div class="col-md-6">
                 <div class="card mb-4">
-                    <div class="card-header">
+                    <div class="card-header" style="background-color: #a0c1d9;">
                         <h6 class="card-title text-center">Carta Status Penyerahan Pelajar</h6>
                     </div>
                     <div class="card-body">

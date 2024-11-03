@@ -96,7 +96,7 @@ main {
 
                                     <?php if ($result_kandungan->num_rows > 0) : ?>
                                         <div class="card">
-    <div class="card-body ">
+                                        <div class="card-body ">
         <?php while ($row_kandungan = $result_kandungan->fetch_assoc()) : ?>
             <h4 class="mb-3"><?= $row_kandungan["nama_kandungan"] ?></h4>
             <p class="mb-4"><?= $row_kandungan["deskripsi_kandungan"] ?></p>
@@ -107,17 +107,27 @@ main {
                 <?php if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif'])) : ?>
                     <img src="<?= $path ?>" width="100%" height="500px" class="mb-4">
                 <?php elseif ($extension == 'docx') : ?>
-
+                    <!-- You can add code to handle docx files here -->
+                <?php elseif ($extension == 'mp4') : ?>
+                    <video width="100%" height="500px" controls>
+                        <source src="<?= $path ?>" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
                 <?php else : ?>
                     <iframe src="<?= $path ?>" width="100%" height="500px" class="mb-4"></iframe>
                 <?php endif; ?>
             <?php endif; ?>
-        
-        <?php endwhile; ?>
-    </div>
-</div>
-                                        <?php else : ?>
-                                            <p>Tiada kandungan dijumpai untuk SP ini.</p>
+                        <div class="d-flex justify-content-center">
+                        <button type='button' class='btn btn-warning btn-sm mr-2' data-toggle='modal' data-target='#editKandunganModal'
+                        data-kandungan='<?= json_encode($row_kandungan) ?>'>Edit</button>
+
+                                    <button type='button' class='btn btn-danger btn-sm' onclick='confirmDeleteKandungan(<?php echo $row_kandungan["kandungan_id"]; ?>)'>Hapus Kandungan</button>
+                        </div>
+                    <?php endwhile; ?>
+                </div>
+            </div>
+             <?php else : ?>
+            <p>Tiada kandungan dijumpai untuk SP ini.</p>
                                         <?php endif; ?>
                                                                         </div>
                                                                     <?php endwhile; ?>
