@@ -18,6 +18,14 @@ $sqlTugasan = "SELECT  COUNT(tugasan_id) AS total_tugasan
 $result_tugasan = $conn->query($sqlTugasan);
 
 $row_tugasan = $result_tugasan->fetch_assoc();
+
+// Count of each Tugasan
+$sqlProjek = "SELECT  COUNT(projek_id) AS total_projek
+        FROM projek"; 
+
+$result_projek = $conn->query($sqlProjek);
+
+$row_projek = $result_projek->fetch_assoc();
 ?>
 
 <!DOCTYPE html>
@@ -107,9 +115,13 @@ main {
                                     <div>Kuiz</div>
                                     <span class="badge badge-primary badge-pill p-2"><?= $row_kuiz['total_kuiz'] ?> Kuiz</span>
                                     </a>
+                                    <a href="view_tugasan1.php" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                    <div>tugasan</div>
+                                    <span class="badge badge-primary badge-pill p-2"><?= $row_projek['total_projek'] ?> Tugasan</span>
+                                    </a>
                                     <a href="view_tugasan.php" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                                     <div>projek</div>
-                                    <span class="badge badge-primary badge-pill p-2"><?= $row_tugasan['total_tugasan'] ?> Tugasan</span>
+                                    <span class="badge badge-primary badge-pill p-2"><?= $row_tugasan['total_tugasan'] ?> Projek</span>
                                     </a>
                                 </div>
                             </div>

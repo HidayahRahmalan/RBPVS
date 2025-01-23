@@ -223,6 +223,34 @@ $submissionLabels = ['Belum Hantar', 'Penyerahan 1', 'Penyerahan 2'];
 $submissionCounts = [$belumHantarCount, $penyerahan1Count, $penyerahan2Count];
 
 
+// Initialize an array to hold group counts
+$groupCounts = [];
+
+// Fetch all rubric descriptions and their group counts
+$sql_group_counts = "
+    SELECT r.deskripsi_rubrik, COUNT(DISTINCT k.kumpulan_id) AS total_groups
+    FROM rubrik r
+    LEFT JOIN penyerahan py ON r.rubrik_id = py.rubrik_id
+    LEFT JOIN kumpulan k ON py.kumpulan_id = k.kumpulan_id
+    WHERE py.tugasan_id = $tugasan_id
+    GROUP BY r.deskripsi_rubrik";
+
+$result_group_counts = $conn->query($sql_group_counts);
+
+while ($row = $result_group_counts->fetch_assoc()) {
+    $description = $row['deskripsi_rubrik'];
+    $count = $row['total_groups'];
+
+    if (!isset($groupCounts[$description])) {
+        $groupCounts[$description] = 0; // Initialize if not set
+    }
+    $groupCounts[$description] += $count; // Aggregate counts
+}
+
+// Prepare data for the chart
+$combinedGroupDescriptions = array_keys($groupCounts);
+$combinedGroupCounts = array_values($groupCounts);
+
 $sql_kumpulan_submission = "SELECT 
     k.nama_kumpulan, py.penyerahan_id,
     py.tarikh_penyerahan1, py.komen, py.tarikh_penyerahan2,
@@ -391,7 +419,17 @@ if ($result_kumpulan_submission->num_rows > 0):
                     </div>
                 </div>
             </div>
+            
         </div>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header" style="background-color: #a0c1d9;">
+        <h6 class="card-title text-center">Carta Jumlah Kumpulan Berdasarkan Deskripsi Rubrik</h6>
+    </div>
+    <div class="card-body">
+        <canvas id="groupChart" style="width: 100%; height: 500px;"></canvas>
     </div>
 </div>
         </main>
@@ -916,6 +954,50 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+
+document.addEventListener('DOMContentLoaded', function() {
+    const ctx = document.getElementById('groupChart').getContext('2d');
+
+    const groupChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: <?php echo json_encode($combinedGroupDescriptions); ?>, // Use rubric descriptions as labels
+            datasets: [{
+                label: 'Jumlah Kumpulan Berdasarkan Deskripsi Rubrik',
+                data: <?php echo json_encode($combinedGroupCounts); ?>, // Group counts
+                backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                borderColor: 'rgba(0, 0, 0, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 1,
+                        callback: function(value) {
+                            return Math.floor(value);
+                        }
+                    }
+                }
+            },
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(tooltipItem) {
+                            return tooltipItem.dataset.label + ': ' + tooltipItem.raw; // Customize tooltip
+                        }
+                    }
+                }
+            }
+        }
+    });
+});
 </script>
 
 </html>

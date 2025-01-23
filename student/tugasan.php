@@ -17,6 +17,14 @@ $sqlTugasan = "SELECT  COUNT(tugasan_id) AS total_tugasan
 $result_tugasan = $conn->query($sqlTugasan);
 
 $row_tugasan = $result_tugasan->fetch_assoc();
+
+// Count of each Tugasan
+$sqlProjek = "SELECT  COUNT(projek_id) AS total_projek
+        FROM projek"; 
+
+$result_projek = $conn->query($sqlProjek);
+
+$row_projek = $result_projek->fetch_assoc();
 ?>
 
 
@@ -98,6 +106,19 @@ main {
                        
                             <p>Jumlah Kuiz : <?= $row_kuiz["total_kuiz"] ?></p>
                             <a href="kuiz.php" class="btn btn-primary">Lihat Kuiz</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card shadow">
+                        <div class="card-header">
+                        <h3>Tugasan</h3>
+                            
+                        </div>
+                        <div class="card-body">
+                       
+                            <p>Jumlah Tugasan : <?= $row_projek["total_projek"] ?> </p>
+                            <a href="view_tugasan1.php" class="btn btn-primary">Lihat Tugasan</a>
                         </div>
                     </div>
                 </div>

@@ -67,7 +67,7 @@ main {
         <tr>
             <th>No.</th>
             <th>Nama Rubrik</th>
-            <th>Deskripsi</th>
+            <th>Aras Pencapaian</th>
             <th>Markah Minimum</th>
             <th>Markah Maksimum</th>
             <th>Tindakan</th>

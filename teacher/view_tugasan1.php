@@ -3,10 +3,9 @@ session_start();
 include 'connect.php';
 $name = $_SESSION['name'];
 
-        // Fetch all Tugasan 
-        $sql_tugasan = "SELECT * FROM tugasan  ORDER BY tarikh_due DESC"; 
+        // Fetch all Projek(Tugasan)
+        $sql_tugasan = "SELECT * FROM projek  ORDER BY tarikh_due DESC"; 
         $result_tugasan = $conn->query($sql_tugasan);
-
 
 ?>
 
@@ -73,14 +72,14 @@ main {
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item " aria-current="page"><a href="tugasan.php">Tugasan</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Projek</li>
+                <li class="breadcrumb-item active" aria-current="page">Tugasan</li>
             </ol>
         </nav>
 
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <a href='tugasan.php' class='btn btn-secondary btn-sm'>Kembali</a>
                 <div></div> 
-                <h1 class="text-center mx-auto">Projek</h1> 
+                <h1 class="text-center mx-auto">Tugasan</h1> 
             </div>
 
             <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#addTugasanModal" data-sk-id="<?= $sk_id ?>">Tambah Tugasan</button>
@@ -91,23 +90,20 @@ main {
             <div class="col-md-6 mb-3">
                 <div class="card h-100">
                     <div class="card-body">
-                        <h5 class="card-title"><strong><?= $row_tugasan["nama_tugasan"] ?></strong></h5>
+                        <h5 class="card-title"><strong><?= $row_tugasan["nama_projek"] ?></strong></h5>
                         <hr class ="bg-dark">
-                        <p class="card-text"><?= $row_tugasan["deskripsi_tugasan"] ?></p>
-                        <p class="card-text"><strong>Jenis Tugasan:</strong> <?= $row_tugasan["jenis_tugasan"] ?></p>
+                        <p class="card-text"><?= $row_tugasan["deskripsi_projek"] ?></p>
                         <p class="card-text"><strong>Tarikh Akhir:</strong> <?= date("d F Y", strtotime($row_tugasan["tarikh_due"])) ?></p>
                         <div class="mt-3"> 
-                            <input type="hidden" class="jenisTugasan" value="<?= $row_tugasan["jenis_tugasan"] ?>">
-                            <input type="hidden" class="tugasanId" value="<?= $row_tugasan["tugasan_id"] ?>">
-                            <button id="viewTugasanDetail" class="btn btn-info btn-sm mr-2">Lihat</button>
+                            <input type="hidden" class="tugasanId" value="<?= $row_tugasan["projek_id"] ?>">
+                            <a href="view_individu_tugasan1.php?id=<?php echo $row_tugasan['projek_id']; ?>" class="btn btn-info btn-sm mr-2">Lihat</a>
                             <button type='button' class='btn btn-warning btn-sm mr-2' 
                                     data-toggle='modal' data-target='#editTugasanModal' 
-                                    data-tugasan-id="<?= $row_tugasan["tugasan_id"] ?>"
-                                    data-nama-tugasan="<?= $row_tugasan["nama_tugasan"] ?>"
-                                    data-deskripsi-tugasan="<?= $row_tugasan["deskripsi_tugasan"] ?>"
-                                    data-jenis-tugasan="<?= $row_tugasan["jenis_tugasan"] ?>"
+                                    data-tugasan-id="<?= $row_tugasan["projek_id"] ?>"
+                                    data-nama-tugasan="<?= $row_tugasan["nama_projek"] ?>"
+                                    data-deskripsi-tugasan="<?= $row_tugasan["deskripsi_projek"] ?>"
                                     data-tarikh-due="<?= $row_tugasan["tarikh_due"] ?>">Edit</button>
-                            <button type='button' class='btn btn-danger btn-sm' onclick='confirmDeleteTugasan(<?= $row_tugasan["tugasan_id"] ?>)'>Hapus</button>
+                            <button type='button' class='btn btn-danger btn-sm' onclick='confirmDeleteTugasan(<?= $row_tugasan["projek_id"] ?>)'>Hapus</button>
                         </div>
                     </div>
                 </div>
@@ -125,12 +121,11 @@ main {
     </div>
 
 
-
     <div class="modal fade" id="addTugasanModal" tabindex="-1" role="dialog" aria-labelledby="addTugasanModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="addTugasanModalLabel">Tambah Projek</h5>
+        <h5 class="modal-title" id="addTugasanModalLabel">Tambah Tugasan</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -138,28 +133,13 @@ main {
       <div class="modal-body">
         <form id="addTugasanForm" enctype="multipart/form-data"> 
           <div class="form-group">
-            <label for="namaTugasan">Nama Projek:</label>
+            <label for="namaTugasan">Nama Tugasan:</label>
             <input type="text" class="form-control" id="namaTugasan" name="namaTugasan" required>
           </div>
           <div class="form-group">
-            <label for="deskripsiTugasan">Deskripsi Projek:</label>
+            <label for="deskripsiTugasan">Deskripsi Tugasan:</label>
             <textarea class="form-control" id="deskripsiTugasan" name="deskripsiTugasan" rows="3"></textarea>
           </div>
-                <div class="form-group">
-            <label>Jenis Projek:</label>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="jenisTugasan" id="individu" value="individu" checked>
-                <label class="form-check-label" for="individu">
-                    Individu
-                </label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="jenisTugasan" id="kumpulan" value="kumpulan">
-                <label class="form-check-label" for="kumpulan">
-                    Kumpulan
-                </label>
-            </div>
-        </div>
           <div class="form-group">
             <label for="tarikhDue">Tarikh Akhir:</label>
             <input type="date" class="form-control" id="tarikhDue" name="tarikhDue" required>
@@ -173,7 +153,6 @@ main {
     </div>
   </div>
 </div>
-
 
 
 <div class="modal fade" id="editTugasanModal" tabindex="-1" role="dialog" aria-labelledby="editTugasanModalLabel" aria-hidden="true">
@@ -195,13 +174,6 @@ main {
           <div class="form-group">
             <label for="editDeskripsiTugasan">Deskripsi Tugasan:</label>
             <textarea class="form-control" id="editDeskripsiTugasan" name="editDeskripsiTugasan" rows="3"></textarea>
-          </div>
-          <div class="form-group">
-            <label for="editJenisTugasan">Jenis Tugasan:</label>
-            <select class="form-control" id="editJenisTugasan" name="editJenisTugasan">
-              <option value="individu">Individu</option>
-              <option value="kumpulan">Kumpulan</option>
-            </select>
           </div>
           <div class="form-group">
             <label for="editTarikhDue">Tarikh Akhir:</label>
@@ -231,22 +203,6 @@ main {
 var jenisTugasans = document.querySelectorAll('.jenisTugasan');
 var tugasanIds = document.querySelectorAll('.tugasanId');
 
-// Add event listener to each 'viewTugasanDetail' button
-document.querySelectorAll('#viewTugasanDetail').forEach(function(button, index) {
-  button.addEventListener('click', function(event) {
-    event.preventDefault();
-
-    // Get the corresponding jenisTugasan and tugasanId values
-    var jenisTugasan = jenisTugasans[index].value;
-    var tugasanId = tugasanIds[index].value;
-
-    if (jenisTugasan === 'individu') {
-      window.location.href = 'view_individu_tugasan.php?id=' + tugasanId;
-    } else if (jenisTugasan === 'kumpulan') {
-      window.location.href = 'view_kumpulan_tugasan.php?id=' + tugasanId;
-    }
-  });
-});
 
 
 // Handle 'addTugasanForm' submission using Fetch API
@@ -259,7 +215,7 @@ document.getElementById('addTugasanForm').addEventListener('submit', function(ev
 
     const formData = new FormData(this);
 
-    fetch('add_tugasan.php', { // Make sure you have this PHP script ready
+    fetch('add_tugasan1.php', { // Make sure you have this PHP script ready
         method: 'POST',
         body: formData
     })
@@ -290,7 +246,6 @@ $('#editTugasanModal').on('show.bs.modal', function (event) {
   modal.find('.modal-body #editTugasanId').val(tugasan_id);
   modal.find('.modal-body #editNamaTugasan').val(nama_tugasan);
   modal.find('.modal-body #editDeskripsiTugasan').val(deskripsi_tugasan);
-  modal.find('.modal-body #editJenisTugasan').val(jenis_tugasan);
   modal.find('.modal-body #editTarikhDue').val(tarikh_due);
 });
 
@@ -304,7 +259,7 @@ document.getElementById('editTugasanForm').addEventListener('submit', function(e
 
   const formData = new FormData(this);
 
-  fetch('edit_tugasan.php', { 
+  fetch('edit_tugasan1.php', { 
     method: 'POST',
     body: formData
   })
@@ -324,7 +279,7 @@ document.getElementById('editTugasanForm').addEventListener('submit', function(e
 
 function confirmDeleteTugasan(tugasan_id) {
     if (confirm("Anda yakin ingin menghapus Tugasan ini?")) {
-        fetch('delete_tugasan.php', {
+        fetch('delete_tugasan1.php', {
             method: 'POST', // Or 'DELETE' depending on your server setup
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'

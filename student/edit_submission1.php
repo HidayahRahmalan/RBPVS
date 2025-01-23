@@ -4,7 +4,6 @@ include 'connect.php';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Sanitize and validate input 
     $penyerahan_id = filter_var($_POST['submission_id'], FILTER_VALIDATE_INT);
-
     if ($penyerahan_id === false) {
         echo "Error: Invalid submission ID.";
         exit;
@@ -67,9 +66,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($uploadOk) {
         // Update data in the database
         $stmt = $conn->prepare("UPDATE penyerahan
-                                SET penyerahan_path1 = ?, tarikh_penyerahan1 = NOW()
-                                WHERE penyerahan_id = ?");
-        $stmt->bind_param("si", $file_path, $penyerahan_id);
+        SET penyerahan_path1 = ?, tarikh_penyerahan1 = NOW()
+        WHERE penyerahan_id = ?");
+            $stmt->bind_param("si", $file_path, $penyerahan_id);
 
         if ($stmt->execute() === TRUE) {
             echo "Penyerahan berjaya dikemaskini!";
@@ -78,7 +77,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             error_log("Error updating submission: " . $conn->error);
 
             // Provide a more user-friendly error message
-            echo "Error: Maaf, terjadi kesalahan saat memperbarui penyerahan Anda. Silakan coba lagi.";
+            echo "Error: Maaf, terjadi kesalahan saat memperbarui penyerahan Anda. Silakan cuba lagi.";
         }
     }
 }
