@@ -158,13 +158,13 @@ $rubricNames = [];
 $studentCounts = [];
 
 // Fetch all rubric names first
-$sql_all_rubrics = "SELECT nama_rubrik FROM rubrik";
+$sql_all_rubrics = "SELECT r.nama_rubrik, r.deskripsi_rubrik FROM rubrik r";
 $result_all_rubrics = $conn->query($sql_all_rubrics);
 
 // Fetch rubric names and initialize counts to zero
 while ($row = $result_all_rubrics->fetch_assoc()) {
     $rubricNames[] = $row["nama_rubrik"];
-    $groupCounts[] = 0; // Initialize with zero
+    $studentCounts[] = 0; // Initialize with zero
 }
 
 // Now fetch counts based on submissions
@@ -180,7 +180,7 @@ $result_rubrik_count = $conn->query($sql_rubrik_count);
 while ($row_rubrik_count = $result_rubrik_count->fetch_assoc()) {
     $index = array_search($row_rubrik_count["nama_rubrik"], $rubricNames);
     if ($index !== false) {
-        $groupCounts[$index] = $row_rubrik_count["total_group"]; // Update count for existing rubric
+        $studentCounts[$index] = $row_rubrik_count["total_group"]; // Update count for existing rubric
     }
 }
 
@@ -426,7 +426,7 @@ if ($result_kumpulan_submission->num_rows > 0):
 
 <div class="card mb-4">
     <div class="card-header" style="background-color: #a0c1d9;">
-        <h6 class="card-title text-center">Carta Jumlah Kumpulan Berdasarkan Deskripsi Rubrik</h6>
+        <h6 class="card-title text-center">Carta Jumlah Kumpulan Berdasarkan Aras Pencapaian PBD</h6>
     </div>
     <div class="card-body">
         <canvas id="groupChart" style="width: 100%; height: 500px;"></canvas>
@@ -540,7 +540,7 @@ if ($result_kumpulan_submission->num_rows > 0):
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
         <button type="submit" form="komen-form" class="btn btn-primary">Simpan Komen</button>
       </div>
     </div>
@@ -570,7 +570,7 @@ if ($result_kumpulan_submission->num_rows > 0):
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
         <button type="submit" form="beriNilaiForm" class="btn btn-primary">Simpan Nilai</button>
       </div>
     </div>
@@ -597,7 +597,7 @@ if ($result_kumpulan_submission->num_rows > 0):
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
         <button type="submit" form="editMarkahForm" class="btn btn-primary">Simpan Perubahan</button>
       </div>
     </div>
@@ -888,7 +888,7 @@ document.addEventListener('DOMContentLoaded', function() {
         data: {
             labels: <?php echo json_encode($rubricNames); ?>,
             datasets: [{
-                label: 'Jumlah Kumpulan Berdasarkan Rubrik',
+                label: 'Jumlah Pelajar Berdasarkan Rubrik',
                 data: <?php echo json_encode($studentCounts); ?>,
                 backgroundColor: barColors,
                 borderColor: 'rgba(0, 0, 0, 1)', 
@@ -998,6 +998,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+
+function confirmLogout() {
+  if (confirm("Anda pasti ingin keluar?")) {
+    window.location.href = "logout.php"; 
+  }
+}
 </script>
 
 </html>

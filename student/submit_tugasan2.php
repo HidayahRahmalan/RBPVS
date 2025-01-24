@@ -81,7 +81,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Check if the group has already submitted
     $sql_submission = "SELECT * FROM penyerahan 
-                       WHERE tugasan_id = $tugasan_id AND kumpulan_id = $kumpulan_id";
+                       WHERE tugasan_id = $tugasan_id AND kumpulan_id = $kumpulan_id AND penyerahan_path2 IS NOT NULL";
     $result_submission = $conn->query($sql_submission);
 
     if ($result_submission->num_rows > 0) {

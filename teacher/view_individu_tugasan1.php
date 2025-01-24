@@ -420,7 +420,7 @@ if ($result_pelajar_submission->num_rows > 0):
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
         <button type="submit" form="komen-form" class="btn btn-primary">Simpan Komen</button>
       </div>
     </div>

@@ -166,9 +166,10 @@ $rubricCounts = []; // To hold the aggregated counts
 
 // Fetch all rubric names and their descriptions
 $sql_rubric_counts = "
-    SELECT r.deskripsi_rubrik, COUNT(py.pelajar_id) AS total_students
+    SELECT r.deskripsi_rubrik, COUNT(DISTINCT py.pelajar_id) AS total_students
     FROM rubrik r
     LEFT JOIN penyerahan py ON r.rubrik_id = py.rubrik_id
+    WHERE py.tugasan_id = $tugasan_id 
     GROUP BY r.deskripsi_rubrik";
 
 $result_rubric_counts = $conn->query($sql_rubric_counts);
@@ -425,7 +426,7 @@ if ($result_pelajar_submission->num_rows > 0):
 
 <div class="card mb-4">
     <div class="card-header" style="background-color: #a0c1d9;">
-        <h6 class="card-title text-center">Carta Jumlah Pelajar Berdasarkan PBDdan aras pencapaian</h6>
+        <h6 class="card-title text-center">Carta Jumlah Pelajar Berdasarkan PBD dan aras pencapaian</h6>
     </div>
     <div class="card-body">
         <canvas id="combinedChart" style="width: 100%; height: 500px;"></canvas>
@@ -544,7 +545,7 @@ if ($result_pelajar_submission->num_rows > 0):
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
         <button type="submit" form="komen-form" class="btn btn-primary">Simpan Komen</button>
       </div>
     </div>
@@ -574,7 +575,7 @@ if ($result_pelajar_submission->num_rows > 0):
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
         <button type="submit" form="beriNilaiForm" class="btn btn-primary">Simpan Nilai</button>
       </div>
     </div>
@@ -601,7 +602,7 @@ if ($result_pelajar_submission->num_rows > 0):
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
         <button type="submit" form="editMarkahForm" class="btn btn-primary">Simpan Perubahan</button>
       </div>
     </div>
@@ -981,6 +982,12 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+
+function confirmLogout() {
+  if (confirm("Anda pasti ingin keluar?")) {
+    window.location.href = "logout.php"; 
+  }
+}
 
 </script>
 
