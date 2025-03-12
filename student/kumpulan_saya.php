@@ -4,11 +4,20 @@ $name = $_SESSION['name'];
 $user_id = $_SESSION['id'];
 
 
-$sql_kumpulan = "SELECT k.kumpulan_id 
+$sql_kumpulan = "SELECT k.kumpulan_id, k.nama_kumpulan
                  FROM ahli_kumpulan ak 
                  JOIN kumpulan k ON ak.kumpulan_id = k.kumpulan_id 
                  WHERE ak.pelajar_id = $user_id";
 $result_kumpulan = $conn->query($sql_kumpulan);
+
+$row_kumpulan = $result_kumpulan->fetch_assoc();
+if ($row_kumpulan) { // Check if a row was returned
+    $nama_kumpulan = $row_kumpulan['nama_kumpulan']; // Corrected line
+    //use $row_kumpulan['nama_kumpulan'] to get the name of the group.
+} else {
+    // Handle the case where no group was found for the user.
+    $nama_kumpulan = null; // or some default value.
+}
 
 ?>
 
@@ -57,6 +66,10 @@ main {
         </nav>
 
         <center><h1>Kumpulan Saya </h1> </center><br>
+
+        <center><h3>Kumpulan : <?php echo $nama_kumpulan?> </h3> </center>
+
+
 
 <div class="card"> 
         <div class="card-body"> 

@@ -112,13 +112,13 @@ main {
                 <div class="col-md-4 mb-4">
                     <div class="card shadow">
                         <div class="card-header">
-                        <h3>Tugasan</h3>
+                        <h3>Lembaran Kerja</h3>
                             
                         </div>
                         <div class="card-body">
                        
-                            <p>Jumlah Tugasan : <?= $row_projek["total_projek"] ?> </p>
-                            <a href="view_tugasan1.php" class="btn btn-primary">Lihat Tugasan</a>
+                            <p>Jumlah Lembaran Kerja : <?= $row_projek["total_projek"] ?> </p>
+                            <a href="view_tugasan1.php" class="btn btn-primary">Lihat Lembaran Kerja</a>
                         </div>
                     </div>
                 </div>

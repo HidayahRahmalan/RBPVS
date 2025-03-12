@@ -55,7 +55,7 @@ if (isset($_GET['id'])) {
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item " aria-current="page"><a href="tugasan.php">Tugasan</a></li>
-                <li class="breadcrumb-item " aria-current="page"><a href="view_tugasan1.php">Tugasan</a></li>
+                <li class="breadcrumb-item " aria-current="page"><a href="view_tugasan1.php">Lembaran Kerja</a></li>
                 <li class="breadcrumb-item active" aria-current="page"><?= $row_tugasan['nama_projek']?></li>
 
             </ol>
@@ -211,7 +211,7 @@ while ($row = $result_submission_count->fetch_assoc()) {
 }
 
 // Prepare data for the pie chart
-$submissionLabels = ['Belum Hantar', 'Penyerahan Tugasan'];
+$submissionLabels = ['Belum Hantar', 'Penyerahan Lembaran Kerja'];
 $submissionCounts = [$belumHantarCount, $penyerahan1Count, $penyerahan2Count];
 
 $sql_pelajar_submission = "SELECT 
@@ -234,7 +234,7 @@ if ($result_pelajar_submission->num_rows > 0):
     <thead>
     <tr>
         <th colspan="2"></th>
-        <th colspan="3" style="background-color: purple;">Penyerahan Tugasan</th>
+        <th colspan="3" style="background-color: purple;">Penyerahan Lembaran Kerja</th>
       <th colspan="4"></th>
     </tr>
     <tr>
@@ -287,7 +287,7 @@ if ($result_pelajar_submission->num_rows > 0):
     </tbody>
 </table>
 <?php else: ?>
-    <p>Tiada pelajar dijumpai untuk tugasan ini.</p>
+    <p>Tiada pelajar dijumpai untuk lembaran kerja ini.</p>
 <?php endif; ?>
 
 

@@ -116,8 +116,8 @@ main {
                                     <span class="badge badge-primary badge-pill p-2"><?= $row_kuiz['total_kuiz'] ?> Kuiz</span>
                                     </a>
                                     <a href="view_tugasan1.php" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                                    <div>tugasan</div>
-                                    <span class="badge badge-primary badge-pill p-2"><?= $row_projek['total_projek'] ?> Tugasan</span>
+                                    <div>Lembaran Kerja</div>
+                                    <span class="badge badge-primary badge-pill p-1"><?= $row_projek['total_projek'] ?> Lembaran Kerja</span>
                                     </a>
                                     <a href="view_tugasan.php" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                                     <div>projek</div>

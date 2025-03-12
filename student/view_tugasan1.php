@@ -70,7 +70,7 @@ main {
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item " aria-current="page"><a href="tugasan.php">Tugasan</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Projek</li>
+                <li class="breadcrumb-item active" aria-current="page">Lembaran Kerja</li>
             </ol>
         </nav>
 
@@ -78,7 +78,7 @@ main {
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <a href='tugasan.php' class='btn btn-secondary btn-sm'>Kembali</a>
                 <div></div> 
-                <h1 class="text-center mx-auto">Projek</h1> 
+                <h1 class="text-center mx-auto">Lembaran Kerja</h1> 
             </div>
 
             <div class="row" id="tugasanList"> 

@@ -56,7 +56,7 @@ $user_id = $_SESSION['id'];
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item " aria-current="page"><a href="tugasan.php">Tugasan</a></li>
-                <li class="breadcrumb-item " aria-current="page"><a href="view_tugasan1.php">Projek</a></li>
+                <li class="breadcrumb-item " aria-current="page"><a href="view_tugasan1.php">Lembaran Kerja</a></li>
                 <li class="breadcrumb-item active" aria-current="page"><?= $row_tugasan['nama_projek']?></li>
 
             </ol>
@@ -195,37 +195,12 @@ $user_id = $_SESSION['id'];
                 data-file-path="<?= $submission_info['penyerahan_path1'] ?>">Perbaiki Tugasan</button>
                 <button type="button" class='btn btn-danger' onclick="confirmDeleteSubmission(<?= $submission_info['penyerahan_id'] ?>)">Hapus</button>
             <?php else: // If there is a comment from the teacher ?>
-                <?php if (empty($submission_info['penyerahan_path2'])): ?>
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addSubmissionModal2">Hantar Tugasan 2</button>
-<?php else: ?>
-    <table class="table table-striped table-bordered table-sm">
-    <tr>
-    <th colspan ="2" class="text-center text-light" style="background-color: orange;">Status Penyerahan 2</th>
-    </tr>
-    <tr>
-        <th style="background-color: #FFDBBB;">Telah hantar pada:</th>
-        <td style="background-color: #FFDBBB;">
-             <?= date("d F Y", strtotime($submission_info['tarikh_penyerahan2'])) ?>
-        </td>
-    </tr>
-    <tr>
-        <th style="background-color: #FFDBBB;">Fail:</th>
-        <td style="background-color: #FFDBBB;">
-           <a target="_blank" href="<?= $submission_info['penyerahan_path2'] ?>"><?= basename($submission_info['penyerahan_path2']) ?></a><br>
-        </td>
-    </tr>
-    <tr>
-        <th style="background-color: #FFDBBB;">Gred:</th>
-        <td style="background-color: #FFDBBB;">
-            <?= !empty($submission_info['nama_rubrik']) ? $submission_info['nama_rubrik'] : 'Belum dinilai'; ?>
-        </td>
-    </tr>
+
     </table>
 
   
                 <?php endif; ?>
             <?php endif; ?>
-        <?php endif; ?>
     </div>
 
 </div>

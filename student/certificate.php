@@ -62,13 +62,14 @@ if ($result_tugasan->num_rows > 0) {
       <img src="../img/cloud.jpg" alt="cloud1" id="cloud1">
       <p>JENIS PROJEK</p>
       <h3 id="task-type"><?= htmlspecialchars($taskType) ?></h3>
+      <h3 id="task-type">SK Seri PAGI</h3>
       <img src="../img/cloud.jpg" alt="cloud" id="cloud">
       <p>PADA <span id="date"><?= htmlspecialchars($date) ?></span></p> 
     </div>
 
-    <div id="footer">
+    <!--<div id="footer">
       <img src="../img/goodjob.png" alt="Tandatangan" id="signature">
-    </div>
+    </div> -->
   </div>
   <script>
     function printCertificate() {

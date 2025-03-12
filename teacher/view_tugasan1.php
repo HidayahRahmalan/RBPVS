@@ -72,17 +72,17 @@ main {
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item " aria-current="page"><a href="tugasan.php">Tugasan</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Tugasan</li>
+                <li class="breadcrumb-item active" aria-current="page">Lembaran Kerja</li>
             </ol>
         </nav>
 
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <a href='tugasan.php' class='btn btn-secondary btn-sm'>Kembali</a>
                 <div></div> 
-                <h1 class="text-center mx-auto">Tugasan</h1> 
+                <h1 class="text-center mx-auto">Lembaran Kerja</h1> 
             </div>
 
-            <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#addTugasanModal" data-sk-id="<?= $sk_id ?>">Tambah Tugasan</button>
+            <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#addTugasanModal" data-sk-id="<?= $sk_id ?>">Tambah Lembaran Kerja</button>
 
             <div class="row" id="tugasanList"> 
     <?php if ($result_tugasan->num_rows > 0): ?>
@@ -111,7 +111,7 @@ main {
         <?php endwhile; ?>
     <?php else: ?>
         <div class="col-12"> 
-            <center><p>Tiada tugasan yang dapat dijumpai.</p></center>
+            <center><p>Tiada Lembaran Kerja yang dapat dijumpai.</p></center>
         </div>
     <?php endif; ?>
 </div>
@@ -125,7 +125,7 @@ main {
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="addTugasanModalLabel">Tambah Tugasan</h5>
+        <h5 class="modal-title" id="addTugasanModalLabel">Tambah Lembaran Kerja</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -133,11 +133,11 @@ main {
       <div class="modal-body">
         <form id="addTugasanForm" enctype="multipart/form-data"> 
           <div class="form-group">
-            <label for="namaTugasan">Nama Tugasan:</label>
+            <label for="namaTugasan">Nama Lembaran Kerja:</label>
             <input type="text" class="form-control" id="namaTugasan" name="namaTugasan" required>
           </div>
           <div class="form-group">
-            <label for="deskripsiTugasan">Deskripsi Tugasan:</label>
+            <label for="deskripsiTugasan">Deskripsi Lembaran Kerja:</label>
             <textarea class="form-control" id="deskripsiTugasan" name="deskripsiTugasan" rows="3"></textarea>
           </div>
           <div class="form-group">

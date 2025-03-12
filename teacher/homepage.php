@@ -52,6 +52,20 @@ main {
   background-color: #fff8eb; /* add a gradient effect */
   border-radius: 10px; /* add a rounded corner effect */
 }
+
+.oval-frame {
+            width: 200px; /* Saiz bingkai bujur */
+            height: 200px; /* Saiz bingkai bujur */
+            border-radius: 50%; 
+            border: 2px solid rgb(0, 0, 0); 
+            margin: 0 auto 20px; 
+            overflow: hidden; 
+        }
+        .oval-frame img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
     </style>
 </head>
 <body>
@@ -75,7 +89,17 @@ main {
 
 <div class="jumbotron bg-light rounded-corners text-center"> 
   <h1 class="display-4" style="font-size: 3rem;">Selamat Datang, Cikgu!</h1>
-  <p class="lead">Platform Digital Topik 6 Reka Bentuk Pengaturcaraan Visual Scratch</p>
+  <hr style="border: 1px solid black;">
+  <p class="lead">Pelantar pembelajaran dalam talian </p>
+  <p class="lead">Mata Pelajaran RBT</p>
+  <p class="lead">Topik Reka Bentuk Pengaturcaraan Scratch</p>
+  <p class="lead">Layari pembelajaran digital anda!</p>
+  <hr style="border: 1px solid black;">
+  <br>
+  <div class="oval-frame">
+            <img src="../img/cikgu_siti.jpg" alt="Gambar Profil">
+        </div>
+        <p class="">Siti Hawa binti Husin</p>
 </div>
 
 

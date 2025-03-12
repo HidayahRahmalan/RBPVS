@@ -382,7 +382,7 @@ if ($result_kumpulan_submission->num_rows > 0):
                 </td>
             </tr>
 
-<?php endwhile; ?>
+<?php $no++; endwhile; ?>
     </tbody>
                     </table>
                     <?php else: ?>
